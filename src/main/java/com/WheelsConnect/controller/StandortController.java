@@ -1,7 +1,7 @@
-package controller;
+package com.WheelsConnect.controller;
 
-import model.Standort;
-import service.StandortService;
+import com.WheelsConnect.service.StandortService;
+import com.WheelsConnect.model.Standort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

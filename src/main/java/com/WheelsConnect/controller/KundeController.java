@@ -1,8 +1,10 @@
-package controller;
+package com.WheelsConnect.controller;
 
-import model.Kunde;
-import service.KundeService;
+import com.WheelsConnect.service.KundeService;
+import com.WheelsConnect.model.Kunde;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,5 +40,10 @@ public class KundeController {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         kundeService.deleteById(id);
+    }
+
+
+    public KundeController(KundeService kundeService) {
+        this.kundeService = kundeService;
     }
 }

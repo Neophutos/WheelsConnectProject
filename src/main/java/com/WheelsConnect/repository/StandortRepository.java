@@ -1,6 +1,6 @@
-package repository;
+package com.WheelsConnect.repository;
 
-import model.Standort;
+import com.WheelsConnect.model.Standort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

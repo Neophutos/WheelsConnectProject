@@ -1,7 +1,7 @@
-package service;
+package com.WheelsConnect.service;
 
-import model.Standort;
-import repository.StandortRepository;
+import com.WheelsConnect.model.Standort;
+import com.WheelsConnect.repository.StandortRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

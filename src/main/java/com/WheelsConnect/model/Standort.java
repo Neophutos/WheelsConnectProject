@@ -1,4 +1,4 @@
-package model;
+package com.WheelsConnect.model;
 
 
 import jakarta.persistence.Entity;

@@ -1,8 +1,9 @@
-package service;
+package com.WheelsConnect.service;
 
-import model.Kunde;
-import repository.KundeRepository;
+import com.WheelsConnect.model.Kunde;
+import com.WheelsConnect.repository.KundeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,5 +28,9 @@ public class KundeService {
 
     public void deleteById(Long id) {
         kundeRepository.deleteById(id);
+    }
+
+    public KundeService(KundeRepository kundeRepository) {
+        this.kundeRepository = kundeRepository;
     }
 }

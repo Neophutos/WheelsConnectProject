@@ -1,13 +1,12 @@
-package model;
+package com.WheelsConnect.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 
 @Entity
+@NoArgsConstructor
 public class Kunde {
 
     @Id
@@ -18,6 +17,11 @@ public class Kunde {
     private String email;
     private String telefonnummer;
     private String adresse;
+
+    public Kunde(String vorname, String nachname) {
+        this.vorname = vorname;
+        this.nachname = nachname;
+    }
 
     // Getter und Setter
 

@@ -1,7 +1,7 @@
-package service;
+package com.WheelsConnect.service;
 
-import model.Buchung;
-import repository.BuchungRepository;
+import com.WheelsConnect.model.Buchung;
+import com.WheelsConnect.repository.BuchungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

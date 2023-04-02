@@ -1,7 +1,7 @@
-package controller;
+package com.WheelsConnect.controller;
 
-import model.Buchung;
-import service.BuchungService;
+import com.WheelsConnect.service.BuchungService;
+import com.WheelsConnect.model.Buchung;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
