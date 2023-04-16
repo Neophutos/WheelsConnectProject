@@ -1,11 +1,14 @@
 package com.WheelsConnect.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDate;
 
 @Entity
+@NoArgsConstructor
+@Table(schema = "public")
 public class Buchung {
 
     @Id
@@ -14,6 +17,7 @@ public class Buchung {
     private LocalDate startdatum;
     private LocalDate enddatum;
     private double gesamtpreis;
+    private String buchungsstatus;
 
     @ManyToOne
     private Kunde kunde;
@@ -21,7 +25,25 @@ public class Buchung {
     @ManyToOne
     private Fahrzeug fahrzeug;
 
+    // Constructor
+    public Buchung(LocalDate startdatum, LocalDate enddatum, double gesamtpreis, Kunde kunde, Fahrzeug fahrzeug) {
+        this.startdatum = startdatum;
+        this.enddatum = enddatum;
+        this.gesamtpreis = gesamtpreis;
+        this.kunde = kunde;
+        this.fahrzeug = fahrzeug;
+    }
+
+
     // Getter und Setter
+
+    public String getBuchungsstatus() {
+        return buchungsstatus;
+    }
+
+    public void setBuchungsstatus(String buchungsstatus) {
+        this.buchungsstatus = buchungsstatus;
+    }
 
     public Long getId() {
         return id;

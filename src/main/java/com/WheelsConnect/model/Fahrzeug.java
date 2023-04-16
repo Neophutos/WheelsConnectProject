@@ -1,9 +1,12 @@
 package com.WheelsConnect.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 
 @Entity
+@NoArgsConstructor
+@Table(schema = "public")
 public class Fahrzeug {
 
     @Id
@@ -15,11 +18,32 @@ public class Fahrzeug {
     private int baujahr;
     private String farbe;
     private boolean verfuegbarkeit;
+    private Double preis;
 
     @ManyToOne
     private Standort standort;
 
+    // Constructor
+    public Fahrzeug(String marke, String modell, String typ, int baujahr, String farbe, boolean verfuegbarkeit, Standort standort) {
+        this.marke = marke;
+        this.modell = modell;
+        this.typ = typ;
+        this.baujahr = baujahr;
+        this.farbe = farbe;
+        this.verfuegbarkeit = verfuegbarkeit;
+        this.standort = standort;
+    }
+
+
     // Getter und Setter
+
+    public Double getPreis() {
+        return preis;
+    }
+
+    public void setPreis(Double preis) {
+        this.preis = preis;
+    }
 
     public Long getId() {
         return id;

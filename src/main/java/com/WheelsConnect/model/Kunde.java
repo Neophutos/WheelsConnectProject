@@ -4,6 +4,8 @@ package com.WheelsConnect.model;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 
 @Entity
 @NoArgsConstructor
@@ -15,9 +17,12 @@ public class Kunde {
     private Long id;
     private String vorname;
     private String nachname;
-    private String email;
-    private String telefonnummer;
+
+    private LocalDate geburtsdatum;
+
     private String adresse;
+    private String telefonnummer;
+    private String email;
 
     public Kunde(String vorname, String nachname) {
         this.vorname = vorname;
@@ -25,6 +30,14 @@ public class Kunde {
     }
 
     // Getter und Setter
+
+    public LocalDate getGeburtsdatum() {
+        return geburtsdatum;
+    }
+
+    public void setGeburtsdatum(LocalDate geburtsdatum) {
+        this.geburtsdatum = geburtsdatum;
+    }
 
     public Long getId() {
         return id;
