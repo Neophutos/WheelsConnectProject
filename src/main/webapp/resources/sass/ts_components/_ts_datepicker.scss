@@ -1,0 +1,51 @@
+/*
+ * Name: _ts_datepicker.scss
+ *
+ * Creator: Michael Heyer (mhy)
+ *
+ * Date: 2022-02-08 ff.
+ *
+ * Description: Common datepicker css classes.
+ *
+ * Copyright (c) 2022 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+.month-prev > svg,
+.month-next > svg {
+  fill: $primary-text-color;
+}
+
+.datepicker-calendar .select-wrapper::after {
+  right: -8px;
+}
+
+.datepicker-date-display {
+  .year-text {
+    font-weight: 100;
+  }
+  .date-text {
+    font-weight: 200;
+  }
+}
+
+.datepicker-footer {
+  padding-left: 5px;
+  padding-right: 5px;
+  min-width: 325px;
+
+  & > :not(.confirmation-btns):not(:last-child) {
+    margin-right: 5px;
+  }
+
+  & > .confirmation-btns {
+    white-space: nowrap;
+    & > :not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+}

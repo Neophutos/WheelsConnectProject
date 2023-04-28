@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://java.sun.com/jsf/html">
+
+<ui:remove>
+  Attributes:
+    - modalSize (tiny, small, medium, large): Defines the size of the modal dialoge. The default value is tiny
+    - modalBaseName
+    - tsRef
+    - modalStyleClasses
+    - contentScrollable
+    - rendered
+    - modalEnctype
+    - modalAcceptCharSet
+    - modalTitle
+    - modalComplexTitle
+    - modalDescription
+    - modalInfoDev
+    - modalFooterButtons
+</ui:remove>
+
+<ui:composition>
+
+  <h:panelGroup id="#{modalBaseName}-modal-dialog"
+                layout="block"
+                a:ts-ref="#{tsRef}"
+                a:dialog-custom-options="{resizable: true, draggable: true}"
+                styleClass="#{modalBaseName}-modal-dialog modal modal-#{not empty modalSize ? modalSize : 'tiny'} #{not empty modalStyleClasses ? modalStyleClasses : ''}">
+    <h:form id="#{not empty modalFormId ? modalFormId : modalBaseName.concat('-modal-form')}"
+            rendered="#{not empty modalBaseName and (empty rendered or rendered)}"
+            enctype="#{not empty modalEnctype ? modalEnctype : 'multipart/form-data'}"
+            acceptcharset="#{not empty modalAcceptCharSet ? modalAcceptCharSet : 'ISO-8859-15'}">
+      <h:panelGroup layout="block" styleClass="modal-header" id="#{modalBaseName}-modal-dialogheader">
+        <h:panelGroup rendered="#{empty modalTitle}">
+          <ui:insert name="modalComplexTitle"/>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{not empty modalTitle}">
+          <h4>#{modalTitle}</h4>
+        </h:panelGroup>
+      </h:panelGroup>
+
+      <h:panelGroup layout="block" styleClass="modal-content#{contentScrollable ? ' content-scrollable' : ''}">
+        <h:panelGroup layout="block" styleClass="modal-main-content">
+          <ui:insert name="modalContent"/>
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" rendered="#{not empty modalDescription}" styleClass="modal-info">
+          <h:outputText escape="false" value="#{modalDescription}"/>
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" rendered="#{not empty modalInfoDev}" styleClass="modal-info-dev">
+          <h:outputText escape="false" value="#{modalInfoDev}"/>
+        </h:panelGroup>
+      </h:panelGroup>
+
+      <h:panelGroup layout="block" styleClass="modal-footer">
+        <h:panelGroup layout="block" styleClass="footer-buttons">
+          <ui:insert name="modalFooterButtons"/>
+        </h:panelGroup>
+      </h:panelGroup>
+    </h:form>
+  </h:panelGroup>
+</ui:composition>
+</html>

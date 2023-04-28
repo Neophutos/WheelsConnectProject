@@ -1,0 +1,191 @@
+/*
+ * Name: _ts_common.scss
+ *
+ * Creator: Michael Heyer (mhy)
+ *
+ * Date: 2020-03-27 ff.
+ *
+ * Description: Common css classes.
+ *
+ * Copyright (c) 2020-2021 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Helper
+
+.text-align {
+  &-left {
+    text-align: left;
+  }
+
+  &-center {
+    text-align: center;
+  }
+
+  &-right {
+    text-align: right;
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Common
+// common css classes
+.to-new-line {
+  clear: both;
+}
+
+.hidden {
+  display: none !important;
+}
+
+h4 {
+  font-weight: lighter;
+  padding-left: 0;
+}
+
+// input type file helper messages
+input[type=file]:not(.browser-default).invalid ~ .helper-text:after {
+  content: attr(data-error);
+  color: $error-color;
+}
+
+input.invalid[type=file]:not(.browser-default):focus {
+  border-bottom: 1px solid #F44336;
+  -webkit-box-shadow: 0 1px 0 0 #F44336;
+  box-shadow: 0 1px 0 0 #F44336;
+}
+
+input[type=file]:not(.browser-default):focus.invalid ~ .helper-text[data-error] {
+  color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.error {
+  color: #F44336;
+}
+
+textarea.materialize-textarea {
+  color: $primary-text-color;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// floating action buttons (FAB)
+.fixed-action-btn.fixed-action-btn-container ul {
+  right: -30px;
+  bottom: -200%;
+  top: auto;
+  height: max-content;
+}
+
+.fixed-action-btn.fixed-action-btn-container .btn-floating {
+  width: initial;
+  height: initial;
+  border-radius: initial;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// formatted text (e.g. from ckeditor)
+.formatted strong {
+  font-weight: bolder;
+}
+
+.formatted mark {
+  background-color: transparent;
+  padding-left: initial;
+}
+
+.formatted .pen-yellow {
+  color: #FFB300;
+}
+
+.formatted .pen-red {
+  color: #B22222;
+}
+
+.formatted .pen-blue {
+  color: #439EE0;
+}
+
+.formatted .pen-green {
+  color: #85C61B;
+}
+
+.formatted ul {
+  list-style-type: initial;
+}
+
+.formatted ul > li {
+  list-style-type: inherit;
+  margin-left: 40px;
+  margin-right: 10px;
+  background-color: unset !important;
+}
+
+.formatted h1 {
+  font-size: 20px !important;
+  font-weight: bolder;
+}
+
+.formatted h2 {
+  font-size: 17px !important;
+  font-weight: bolder;
+}
+
+ul.draggable-helper {
+  background-color: lighten($primary-bg-color, 10);
+  padding: 2px;
+}
+
+ul.draggable-helper > li {
+  margin-top: 2px;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// StrDiff classes
+.diff-new {
+  background-color: $diff-bg !important;
+  font-size: inherit;
+  font-weight: bold;
+  color: $diff-new-color;
+}
+
+.diff-delete {
+  background-color: $diff-bg !important;
+  font-size: inherit;
+  text-decoration: line-through;
+  font-weight: bold;
+  color: $diff-delete-color;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// required tag classes (add asterix to required input fields label)
+.required {
+  z-index: 2;
+}
+
+.required::after {
+  content: var(--required-tag, "*");
+}
+
+@import "ts_components/ts_buttons";
+@import "ts_components/ts_ck_editor";
+@import "ts_components/ts_collapsibles";
+@import "ts_components/ts_datatables";
+@import "ts_components/ts_datepicker";
+@import "ts_components/ts_dual_select_lists";
+@import "ts_components/ts_input_fields";
+@import "ts_components/ts_modal";
+@import "ts_components/ts_overlay_panels";
+@import "ts_components/ts_select_menu";
+@import "ts_components/ts_sticky_container";
+@import "ts_components/ts_cards";
+@import "ts_components/ts_chips";

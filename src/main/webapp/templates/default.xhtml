@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<c:set
+        var="baseURL"
+        value="${request.requestURL.substring(0, request.requestURL.length() - request.requestURI.length())}${request.contextPath}"/>
+
+<h:head>
+    <title>#{not empty pagetitle ? pagetitle : ''}</title>
+
+    <ui:insert name="meta"/>
+
+    <script type="application/javascript">
+       var pagePrefix="#{pageprefix}";
+       var baseURL="#{baseURL}";
+       var webSessionTimeout = "30";
+       var currentUserId = "";
+
+       var tsAutoCompleteDisablement = true;
+    </script>
+
+    <style type="text/css">
+       :root {
+          --required-tag: "#{cmsg['de.techspring.label.required.text']}"
+       }
+    </style>
+
+    <ui:insert name="head-first"/>
+
+    <link rel="stylesheet" href="#{pageprefix}resources/css/datatables.min.css#{compileTimeUtils.versionAsFirstHttpParam}"/>
+    <link rel="stylesheet" href="#{pageprefix}resources/css/google-fonts.css#{compileTimeUtils.versionAsFirstHttpParam}"/>
+
+    <link rel="stylesheet" href="#{pageprefix}resources/css/materialize.css#{compileTimeUtils.versionAsFirstHttpParam}"/>
+    <link rel="stylesheet" href="#{pageprefix}resources/css/dark-theme.css#{compileTimeUtils.versionAsFirstHttpParam}"/>
+
+    <!--
+        <h:outputStylesheet library="css" name="datatables.min.css"/>
+        <h:outputStylesheet library="css" name="google-fonts.css"/>
+
+        <h:outputStylesheet library="css" name="materialize.css"/>
+        <h:outputStylesheet library="css" name="dark-theme.css"/>
+    -->
+
+    <!--
+                This is how you can include files provided by webjars
+
+    <h:outputScript library="webjars" name="/common-web-overlay/1.0.0/resources/js/jquery-3.5.1.js"/>
+    <h:outputScript library="webjars" name="/common-web-overlay/1.0.0/resources/js/materialize.js"/>
+    -->
+
+    <script type="text/javascript" src="resources/js/globalize/cldr.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/cldr/event.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/cldr/supplemental.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/globalize.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/globalize/message.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/globalize/number.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/globalize/plural.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/globalize/date.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/globalize/currency.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/globalize/relative-time.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/globalize/globalize/unit.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+
+    <script type="text/javascript" src="resources/js/sockjs.min.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/js/stomp.umd.min.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+
+    <h:outputScript library="js" name="jquery-3.6.0.js"/>
+    <h:outputScript library="js" name="jquery-ui.js"/>
+    <h:outputScript library="js" name="materialize.js"/>
+    <h:outputScript library="js" name="datatables.js"/>
+
+    <h:outputScript library="js" name="ts_locale.js"/>
+    <h:outputScript library="js" name="ts_materialize.js"/>
+    <h:outputScript library="js" name="ts_materialize.js"/>
+    <h:outputScript library="js" name="ts_dialog.js"/>
+    <h:outputScript library="js" name="ts_datatables.js"/>
+    <h:outputScript library="js" name="ts_toasthandler.js"/>
+    <h:outputScript library="js" name="ts_globaltooltip.js"/>
+    <h:outputScript library="js" name="ts_collapsiblehandler.js"/>
+    <h:outputScript library="js" name="ts_codeeditor.js"/>
+
+    <h:outputScript library="js" name="ts_spring_websocket.js"/>
+    <h:outputScript library="js" name="ts_springquery.js"/>
+    <h:outputScript library="js" name="ts_result_tables.js"/>
+    <h:outputScript library="js" name="ts_table_filters.js"/>
+
+    <h:outputScript library="js" name="ts_query.js"/>
+    <h:outputScript library="js" name="ts_column.js"/>
+
+    <link rel="stylesheet" href="resources/code-mirror/lib/codemirror.css#{compileTimeUtils.versionAsFirstHttpParam}" type="text/css"/>
+    <link rel="stylesheet" href="resources/code-mirror/addon/lint/lint.css#{compileTimeUtils.versionAsFirstHttpParam}" type="text/css"/>
+    <link rel="stylesheet" href="resources/code-mirror/addon/scroll/simplescrollbars.css#{compileTimeUtils.versionAsFirstHttpParam}" type="text/css"/>
+    <script type="text/javascript" src="resources/code-mirror/lib/codemirror.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/code-mirror/mode/sql/sql.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/code-mirror/addon/lint/lint.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/code-mirror/addon/scroll/simplescrollbars.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/code-mirror/addon/display/placeholder.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/code-mirror/addon/edit/matchbrackets.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/code-mirror/addon/fold/collapserange.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/code-mirror/addon/search/searchcursor.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+    <script type="text/javascript" src="resources/code-mirror/addon/search/match-highlighter.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+
+    <ui:insert name="head"/>
+
+</h:head>
+<h:body onload="#{not empty onloadPage ? onloadPage : ''}">
+
+    <ui:insert name="content"/>
+
+    <ui:insert name="modal"/>
+
+    <ui:decorate template="../common-tiles/modal-status.xhtml"/>
+</h:body>
+</html>

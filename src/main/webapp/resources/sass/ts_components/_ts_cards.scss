@@ -1,0 +1,38 @@
+/*
+ * Name: _ts_buttons.scss
+ *
+ * Creator: Fabian Frank (ffr)
+ *
+ * Date: 2022-02-23 ff.
+ *
+ * Description: Common cards css classes.
+ *
+ * Copyright (c) 2022 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+// -----------------------------------------------------------------------------
+// Parameter(s)
+
+$card-color: #000000FF !default;
+$card-bg-color: #FFFF !default;
+
+
+// -----------------------------------------------------------------------------
+// Styling information
+
+.card {
+  color: $card-color;
+  background-color: $card-bg-color;
+
+  > .card-content {
+    > .card-title {
+      font-size: 20px;
+      line-height: 20px;
+    }
+  }
+}

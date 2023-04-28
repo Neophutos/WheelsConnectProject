@@ -1,0 +1,84 @@
+/*
+ * Name: _ts_dual_select_lists.scss
+ *
+ * Creator: Michael Heyer (mhy)
+ *
+ * Date: 2022-02-08 ff.
+ *
+ * Description: Common dual select list css classes.
+ *
+ * Copyright (c) 2022 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+.dual-select-list {
+  display: flex;
+  max-height: 250px;
+}
+
+.dual-select-list-control {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.dual-select-list-control-element {
+  padding: 10px;
+}
+
+.dual-select-list ul.collection .collection-item.ui-selecting {
+  background-color: #FECA40;
+}
+
+.dual-select-list ul.collection .collection-item.ui-selected {
+  background-color: #F39814;
+  color: white;
+}
+
+.dual-select-list-source, .dual-select-list-target {
+  border: none;
+  position: unset;
+  height: 100%;
+  margin: 0;
+  overflow-y: auto;
+}
+
+.dual-select-list-source > li, .dual-select-list-target > li {
+  border: none !important;
+}
+
+.dual-select-list .dual-select-list-panel {
+  border: 1px solid $collection-border-color;
+  overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  .dual-select-list {
+    display: block;
+  }
+  .dual-select-list .col {
+    float: none;
+  }
+  .dual-select-list-control {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+  }
+  .dual-select-list-control i {
+    transform: rotate(90deg);
+  }
+}
+
+.dual-select-list-panel .collection-item.disabled {
+  opacity: .3;
+}

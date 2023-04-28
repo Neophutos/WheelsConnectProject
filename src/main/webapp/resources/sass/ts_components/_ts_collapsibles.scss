@@ -1,0 +1,367 @@
+/*
+ * Name: _ts_collapsibles.scss
+ *
+ * Creator: Michael Heyer (mhy)
+ *
+ * Date: 2022-02-08 ff.
+ *
+ * Description: Common collapsibles css classes.
+ *
+ * Copyright (c) 2022 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Convert Collapsible element to tabmode view
+$collapsible-tabs-tabs-position: flex-start !default;
+
+.collapsible {
+  position: relative;
+}
+
+.collapsible-tabs {
+  box-shadow: none;
+  padding-bottom: 15px;
+  width: 100%;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: $collapsible-tabs-tabs-position;
+  height: calc(100vh - 270px);
+  min-height: 10em;
+  border: none;
+
+  .collapsible-body {
+    padding: 30px 20px 30px 20px !important;
+
+    .dt-searchfield-and-buttons {
+      width: inherit !important;
+    }
+  }
+}
+
+
+.sub-collapsible {
+  padding-bottom: 0;
+  height: auto !important;
+  margin: -20px -10px 0 0.5em !important;
+
+  // correct height of sub collapsible in tab mode
+  &.collapsible-tabs > li:not(.active) > .collapsible-body {
+    display: block;
+    visibility: hidden;
+    width: 0;
+    overflow: clip !important;
+    position: initial !important;
+  }
+}
+
+.collapsible-tabs {
+  display: flex;
+  flex-direction: row;
+}
+
+.collapsible-tabs > li {
+  display: inline;
+  margin-right: 3px;
+  overflow: hidden;
+}
+
+.collapsible-tabs > li > .collapsible-header {
+  display: inline-flex;
+  border-top: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.collapsible-tabs > li > .collapsible-header > .collapsible-header-text {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collapsible-tabs > .active > .collapsible-header,
+.collapsible-tabs > .active > .custom-collapsible-element > .collapsible-header {
+  background-color: #ccc;
+}
+
+.collapsible-tabs > li > .collapsible-body .dataTables_wrapper > .row {
+  margin-left: inherit;
+  margin-right: inherit;
+}
+
+.collapsible-tabs-can-toggle:not(.collapsible-tabs) {
+  height: calc(100vh - 315px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.collapsible-tabs > li > .collapsible-body {
+  display: none;
+  position: absolute;
+  width: calc(100% - 1px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  margin-top: 1em;
+  min-height: 10em;
+  height: calc(100vh - 315px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: none;
+
+  padding-left: 2px;
+  padding-right: 20px;
+}
+
+.collapsible:not(.collapsible-tabs) > li > .collapsible-body {
+  position: unset;
+}
+
+.sub-collapsible > li > .collapsible-body {
+  margin-top: 0.2em;
+  height: auto !important;
+  padding-left: 2px;
+  padding-right: 0 !important;
+  overflow-x: hidden !important;
+}
+
+.collapsible > li > .collapsible-body > .container {
+  width: 100%;
+}
+
+.collapsible > .collapsible-toggle-icon {
+  background-color: transparent;
+  padding: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.8;
+  z-index: 1001;
+  width: 18px;
+  height: 18px;
+  line-height: 17px;
+  transition: none;
+}
+
+.collapsible > .collapsible-toggle-icon:hover {
+  opacity: 1;
+}
+
+.collapsible:not(.collapsible-tabs) > .collapsible-toggle-icon {
+  top: 0;
+  left: 0;
+}
+
+.collapsible > .collapsible-toggle-icon > i {
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.collapsible .collapsible-header {
+  color: $primary-bg-color;
+
+  > i {
+    width: unset;
+  }
+}
+
+.collapsible-header-action {
+  @extend .collapsible-header;
+}
+
+.collapsible-tabs  > li > .collapsible-header.sticky-container {
+  position: unset !important;
+  top: unset !important;
+  z-index: unset !important;
+}
+
+.collapsible {
+  border: none;
+  box-shadow: none;
+}
+
+.collapsible-body {
+  border: none;
+}
+
+.collapsible .collapsible-header,
+.collapsible .collapsible-header-action {
+  background-color: $card-bg-color !important;    // Needs to be marked as important because the values sometimes
+  color: $collapsible-text-color !important;          // had been overwritten on click. The side effect was the white background
+  border-bottom: 2px solid $primary-bg-color !important;
+}
+
+.collapsible .collapsible-header tr {
+  background-color: $card-bg-color !important;
+  border-bottom: unset;
+}
+
+.collapsible-header.error,
+.custom-collapsible-element.error {
+  border: 1px $error-color solid !important;
+}
+
+.collapsible-tabs > li > .collapsible-header,
+.collapsible-tabs > li > .collapsible-header-action {
+  border-color: $card-bg-color;
+}
+
+.collapsible-row {
+  width: 100%;
+}
+
+.collapsible-row a,
+.collapsible-row .user-view-command-link {
+  color: $primary-text-color;
+}
+
+.collapsible-tabs > .active > .collapsible-header,
+.collapsible-tabs > .active > .collapsible-header-action,
+.collapsible-tabs > .active > .custom-collapsible-element,
+.collapsible-tabs > .active > .custom-collapsible-element > .collapsible-header,
+.collapsible-tabs > .active > .custom-collapsible-element > .collapsible-header-action {
+  background-color: $primary-bg-color !important;
+  border-color: transparent;
+  color: $primary-text-color;
+  position: relative;
+}
+
+.collapsible-tabs > .active > .collapsible-header tr {
+  background-color: $primary-bg-color !important;
+}
+
+.custom-collapsible-element > a.btn,
+.collapsible-tabs-can-toggle > a.btn {
+  color: $primary-text-color;
+  background-color: transparent;
+}
+
+.custom-collapsible-element > a.btn:not(.collapsible-toggle-icon):hover,
+.collapsible-tabs-can-toggle > a.btn:not(.collapsible-toggle-icon):hover {
+  background-color: $collapsible-toggle-bg-color;
+}
+
+.custom-collapsible-element > a.btn.collapsible-toggle-icon,
+.collapsible-tabs-can-toggle > a.btn.collapsible-toggle-icon {
+  color: $collapsible-toggle-text-color;
+  background-color: transparent;
+
+  * {
+    color: $collapsible-toggle-text-color;
+  }
+}
+
+.collapsible-tabs > li > .collapsible-header,
+.collapsible-tabs > li > .collapsible-header-action,
+.collapsible-tabs > li > .custom-collapsible-element > .collapsible-header,
+.collapsible-tabs > li > .custom-collapsible-element > .collapsible-header-action {
+  border-bottom: 1px solid $card-bg-color;
+}
+
+.collapsible-header-aligned-to-body {
+  padding: 1rem 1rem;
+}
+
+.collapsible-header-aligned-to-body i {
+  width: auto;
+}
+
+.collapsible-row-actions-container, .toggleable-collapsible-row-actions {
+  position: relative;
+  display: flex;
+  padding-right: 0 !important;
+
+  @media #{$large-and-up} {
+    justify-content: flex-end;
+  }
+  @media #{$medium-and-down} {
+    justify-content: flex-start;
+  }
+}
+
+.collapsible-row-actions i, .collapsible-questions-tab i, .toggleable-collapsible-row-actions i {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.collapsible-row-actions {
+  //position: absolute;
+  //top: -5px;
+}
+
+.collapsible-row-actions > a,
+.collapsible-row-actions > span,
+.toggleable-collapsible-row-actions > a,
+.toggleable-collapsible-row-actions > span {
+  padding: 0 16px;
+}
+
+.collapsible > li:not(.active) > .custom-collapsible-element {
+  position: relative;
+  border-top: 1px solid $card-bg-color;
+  border-right: 1px solid $card-bg-color;
+}
+
+.collapsible-tabs > li > .custom-collapsible-element {
+  display: inline-flex;
+}
+
+.collapsible > li > .custom-collapsible-element > .custom-collapsible-header,
+.collapsible > li > .custom-collapsible-element.custom-collapsible-header {
+  padding-right: 40px;
+}
+
+.collapsible > li > .custom-collapsible-element > .collapsible-delete-btn {
+  padding: 0 6px;
+  position: absolute;
+  right: 0;
+  opacity: 0.9;
+}
+
+.collapsible-delete-btn i {
+  width: auto;
+  font-size: 1.3rem;
+  display: inline-block;
+  text-align: center;
+  margin-right: 0;
+}
+
+.collapsible-row {
+  flex: auto;
+}
+
+.collapsible-row-actions-buttons-flex{
+  display: inline-flex;
+}
+
+.add-tab-collapsible-item {
+  border: none;
+}
+
+.collapsible-header-text-small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: grid !important; /* rendering of class is before rendering materialize class, if important is not set, materialize overwrites styling */
+  grid-template-columns: 90% 10%;
+}
+
+.collapsible-header-first-tab {
+  margin-left: 16px;
+}
+
+.collapsible-body-overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+.collapsible-header-title-first {
+  padding-left: 25px;
+}
+

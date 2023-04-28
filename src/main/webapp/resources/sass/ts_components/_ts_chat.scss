@@ -1,0 +1,263 @@
+/*
+ * Name: _ts_chat.scss
+ *
+ * Creator: Fabian Frank
+ *
+ * Date: 09.09.2021 ff.
+ *
+ * Description: Scss definitions for chat rooms.
+ *
+ * Copyright (c) 2021 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+/*
+
+  Default chat styling
+  -----------------------------------------------------------------------------
+    $chat-window-background-color
+    $chat-window-border
+
+    $chat-title-background-color
+    $chat-title-text-color
+    $chat-title-border
+
+
+  Styling of the current user's chat messages
+  -----------------------------------------------------------------------------
+    $my-chat-message-background-color
+    $my-chat-message-text-color
+    $my-chat-message-border
+
+
+  Styling of the other user's chat messages
+  -----------------------------------------------------------------------------
+    $other-chat-message-background-color
+    $other-chat-message-text-color
+    $other-chat-message-border
+
+  Styling of the user's input field
+  -----------------------------------------------------------------------------
+    $send-button-color
+    $input-field-color
+    $input-placeholder-color
+    $input-border-color
+    $input-focus-border-color
+
+  Other styling information
+  -----------------------------------------------------------------------------
+    $selected-chat-message-border
+
+ */
+
+
+$chat-background-color: #FFC8C8 !default;
+$chat-border: 1px solid #DBDDDD !default;
+
+$chat-title-background-color: #FFC8C8 !default;
+$chat-title-text-color: #000000 !default;
+$chat-title-border: none !default;
+
+$chat-empty-message-color: #000000 !default;
+
+$my-chat-message-background-color: rgba(0,0,0,0) !default;
+$my-chat-message-text-color: #000000 !default;
+$my-chat-message-border: 1px solid #000000 !default;
+$my-chat-message-edit-color: #000000 !default;
+
+$other-chat-message-background-color: #6E6565 !default;
+$other-chat-message-text-color: #ffffff !default;
+$other-chat-message-border: none !default;
+
+$send-button-color: #000000 !default;
+$input-field-color: #000000 !default;
+$input-placeholder-color: #000000 !default;
+$input-border-color: #000000 !default;
+$input-focus-border-color: #000000 !default;
+
+$selected-chat-message-border: 2px solid #ff8800 !default;
+
+/*
+Defines the design of a chat message
+ */
+@mixin chat-message-container($background-color: #000000, $text-color: #ffffff, $border: none, $border-radius: 5px) {
+  background-color: #{$background-color};
+  color: #{$text-color};
+  border: #{$border};
+  word-wrap: break-word;
+  border-radius: #{$border-radius};
+  margin: 5px 0 5px 0;
+  padding: 0 10px 0 10px;
+  clear: both;
+}
+
+/*
+Additional information like creation date, sender etc.
+ */
+@mixin chat-message-information($color: #999999) {
+  color: #999999;
+  font-size: 12px;
+  bottom: -5px;
+  right: -5px;
+}
+
+/*
+Responsive behaviour of chat messages
+ */
+@mixin chat-message-responsiveness() {
+  @media(min-width: 1135px) {
+    width: 45%;
+  }
+
+  @media(min-width: 535px) and (max-width: 1134px) {
+    width: 70%;
+  }
+
+  @media(max-width: 534px) {
+    width: 100%;
+  }
+}
+
+.chat-container {
+  > .chat-room-header-title {
+    background-color: $chat-title-background-color;
+    color: $chat-title-text-color;
+    border: $chat-title-border;
+    padding-left: 10px
+  }
+
+  > .chat-view {
+    background: $chat-background-color;
+    border: $chat-border;
+
+    > .empty-chat {
+      color: $chat-empty-message-color;
+      position: relative;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    > .chat-window {
+      padding: 10px;
+      min-height: 250.0px;
+      max-height: 500px;
+
+      > .chat-message-container {
+        .chat-body {
+          text-align: left;
+          white-space: pre-wrap;
+        }
+
+        .chat-message-information {
+          @include chat-message-information;
+        }
+
+        // My chat messages
+        //-----------------------------------------------------------------------
+
+        > .my-chat-message {
+          @include chat-message-responsiveness;
+          @include chat-message-container($my-chat-message-background-color, $my-chat-message-text-color, $my-chat-message-border);
+          float: right;
+          color: $my-chat-message-text-color;
+
+          > .chat-body {
+            padding-top: 5px;
+          }
+          > .chat-additional-information {
+            text-align: left;
+            padding-top: 10px;
+
+            > .chat-container-message-action-buttons {
+              float: right;
+
+              i {
+                font-size: 1.3rem;
+                color: $my-chat-message-edit-color;
+              }
+            }
+          }
+
+          &.selected {
+            border: $selected-chat-message-border;
+          }
+        }
+
+        // Other chat messages
+        //-----------------------------------------------------------------------
+
+        > .other-chat-message {
+          @include chat-message-responsiveness;
+          @include chat-message-container($other-chat-message-background-color, $other-chat-message-text-color, $other-chat-message-border);
+          float: left;
+          color: $other-chat-message-text-color;
+
+          > .sender-container {
+            text-align: right;
+          }
+
+          > .chat-additional-information {
+            padding-top: 10px;
+            text-align: right;
+          }
+
+          > .chat-has-been-edited {
+            text-align: left
+          }
+        }
+      }
+    }
+
+    // Footer
+    //-----------------------------------------------------------------------
+
+    > .chat-input-container {
+      background: $chat-background-color;
+      border-top: 1px solid gray;
+      margin: 10px 0 20px 0;
+
+      > .input-textarea {
+        width: 95%;
+        float: left;
+        max-height: 100px;
+        overflow-y: auto;
+        padding-top: 10px;
+
+        > textarea {
+          color: $input-field-color;
+          border-bottom: $input-border-color;
+          margin: 0;
+
+          &::placeholder {
+            color: $input-placeholder-color;
+          }
+
+          &:focus {
+            border-bottom: $input-focus-border-color;
+            box-shadow: none;
+          }
+        }
+      }
+
+      > .chat-action-buttons {
+        width: 5%;
+        padding: 20px 10px 0 0;
+        float: right;
+
+        > a {
+          color: $send-button-color;
+          padding-left: 50%;
+          border: none;
+
+          &:hover {
+            background-color: rgba(0,0,0,0) !important;     // Disabling any hover effects manipulation the background color
+          }
+        }
+      }
+    }
+  }
+}

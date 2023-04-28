@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:body>
+
+    <composite:interface>
+        <composite:attribute name="paddingRight" default="0"/>
+        <composite:attribute name="paddingLeft" default="0"/>
+        <composite:attribute name="paddingTop" default="0"/>
+        <composite:attribute name="paddingBottom" default="0"/>
+        <composite:attribute name="paddingUnit" default="px"
+                             shortDescription="Choose between availabe css units of length"/>
+        <composite:attribute name="panelBinding" type="javax.faces.component.html.HtmlPanelGroup" required="true"/>
+
+    </composite:interface>
+
+
+    <composite:implementation>
+
+        <h:form id="execution-panel"
+                styleClass="execution-panel"
+                rendered="#{executionController.mode.executeMode}"
+                style="padding-right:#{cc.attrs.paddingRight}#{cc.attrs.paddingUnit};
+            padding-left:#{cc.attrs.paddingLeft}#{cc.attrs.paddingUnit};
+            padding-top:#{cc.attrs.paddingTop}#{cc.attrs.paddingUnit};
+            padding-bottom:#{cc.attrs.paddingBottom}#{cc.attrs.paddingUnit};">
+
+            <h:panelGroup styleClass="execution-text">
+                <h:outputText value="Response:"/>
+                <h:panelGroup binding="#{cc.attrs.panelBinding}"/>
+            </h:panelGroup>
+
+
+
+
+
+
+
+
+            <h:panelGroup styleClass="execution-btn">
+
+            </h:panelGroup>
+        </h:form>
+
+    </composite:implementation>
+</h:body>
+</html>

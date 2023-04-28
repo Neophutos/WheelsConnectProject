@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+>
+
+<h:body>
+    <composite:interface componentType="pickList">
+        <composite:attribute name="sourceCollection" type="java.util.Collection" required="true"/>
+        <composite:attribute name="sourceCaption" default=""/>
+        <composite:attribute name="targetCollection" type="java.util.Collection" required="true"/>
+        <composite:attribute name="targetCaption" default=""/>
+        <composite:attribute name="immutableCollection" type="java.util.Collection"/>
+        <composite:attribute name="render" default="@none"/>
+        <composite:attribute name="var" default="listItem"/>
+        <composite:attribute name="showSourceFilter" default="#{false}"/>
+        <composite:attribute name="showTargetFilter" default="#{false}"/>
+        <composite:attribute name="addLabel" default=""/>
+        <composite:attribute name="addAllLabel" default=""/>
+        <composite:attribute name="removeLabel" default=""/>
+        <composite:attribute name="removeAllLabel" default=""/>
+        <composite:attribute name="onchange" default=""/>
+        <composite:attribute name="style" default=""/>
+        <composite:attribute name="styleClass" default=""/>
+        <composite:attribute name="sorted" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="sortComparator" type="java.util.Comparator"/>
+        <composite:attribute name="elementTooltip" default="" shortDescription="EL expression for list element tooltips"/>
+
+    </composite:interface>
+
+    <composite:implementation>
+        <f:event type="postAddToView" listener="#{cc.init}" />
+        <h:panelGroup layout="block"
+                      a:onchange="#{cc.attrs.onchange}"
+                      style="#{not empty cc.attrs.style ? cc.attrs.style : ''}"
+                      styleClass="dual-select-list-container #{not empty cc.attrs.styleClass ? cc.attrs.styleClass : ''}">
+            <h:panelGroup
+                layout="block"
+                rendered="#{cc.attrs.showSourceFilter or cc.attrs.showTargetFilter}"
+                styleClass="row">
+                <h:panelGroup layout="block"
+                              styleClass="col m5 s12 input-field">
+                    <h:inputText id="sourceFilter"
+                                 a:placeholder="#{cmsg['de.techspring.common.placeholder.search.value']}"
+                                 styleClass="picklist-source-filter"/>
+                </h:panelGroup>
+                <h:panelGroup layout="block"
+                              styleClass="col m2 s12">
+                    <h:outputLabel for="actionPanel"
+                                   escape="false"
+                                   value="&nbsp;"/>
+                </h:panelGroup>
+                <h:panelGroup layout="block"
+                              styleClass="col m5 s12 input-field">
+                    <h:inputText id="targetFilter"
+                                 a:placeholder="#{cmsg['de.techspring.common.placeholder.search.value']}"
+                                 styleClass="picklist-target-filter"/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup
+                layout="block"
+                rendered="#{true or not empty cc.attrs.sourceCaption or not empty cc.attrs.targetCaption}"
+                styleClass="row">
+                <h:panelGroup layout="block"
+                              styleClass="col m5 s12">
+                    <composite:renderFacet required="false" name="sourceCaption"/>
+                    <h:outputLabel for="sourceListPanel"
+                                   escape="false"
+                                   value="#{empty cc.attrs.sourceCaption ? '&nbsp;' : cc.attrs.sourceCaption}"/>
+                </h:panelGroup>
+                <h:panelGroup layout="block"
+                              styleClass="col m2 s12">
+                    <h:outputLabel for="actionPanel"
+                                   escape="false"
+                                   value="&nbsp;"/>
+                </h:panelGroup>
+                <h:panelGroup layout="block"
+                              styleClass="col m5 s12">
+                    <composite:renderFacet required="false" name="targetCaption"/>
+                    <h:outputLabel for="targetListPanel"
+                                   escape="false"
+                                   value="#{empty cc.attrs.targetCaption ? '&nbsp;' : cc.attrs.targetCaption}"/>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup
+                layout="block"
+                styleClass="row dual-select-list">
+                <h:inputHidden
+                        id="dual-list-selected-ids"
+                        a:class="dual-list-selected-ids"
+                        value="#{cc.selectedIds}"/>
+
+                <h:panelGroup id="sourceListPanel"
+                              layout="block"
+                              styleClass="col m5 s12 dual-select-list-panel ts-ref-source-list">
+                    <ul jsf:id="sourceList"
+                        class="collection dual-select-list-source">
+                        <ui:repeat binding="#{cc.sourceUiRepeat}"
+                                   var="listItem"
+                                   varStatus="listItemStatus"
+                                   value="#{cc.sourceCollectionFromUnassigned}">
+                            <li class="collection-item  #{not empty cc.attrs.elementTooltip ? 'tooltipped' : ''}"
+                                data-id="#{cc.getSourceItemId(listItemStatus.index)}"
+                                data-position="bottom"
+                                data-tooltip="#{not empty cc.attrs.elementTooltip ? cc.getTooltip(cc.attrs.elementTooltip) : ''}">
+                                <composite:renderFacet required="true" name="output-element"/>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </h:panelGroup>
+
+                <h:panelGroup id="actionPanel"
+                              layout="block"
+                              styleClass="col m2 s12 dual-select-list-control ts-ref-list-control">
+                    <div class="dual-select-list-control-element">
+                        <h:commandLink styleClass="btn assign-all #{not empty cc.attrs.addAllLabel ? 'tooltipped' : ''}"
+                                       a:data-position="bottom"
+                                       a:data-tooltip="#{cc.attrs.addAllLabel}"
+                                       actionListener="#{cc.assignAll}">
+                            <i class="material-icons">last_page</i>
+                            <f:ajax execute="@this dual-list-selected-ids"
+                                    immediate="true"
+                                    onevent="materializetool.dualSelectList_onevent"
+                                    render="#{cc.attrs.render}"/>
+                        </h:commandLink>
+                    </div>
+                    <div class="dual-select-list-control-element">
+                        <h:commandLink styleClass="btn assign-selected #{not empty cc.attrs.addLabel ? 'tooltipped' : ''}"
+                                       a:data-position="bottom"
+                                       a:data-tooltip="#{cc.attrs.addLabel}"
+                                       onclick="materializetool.updateDualSelectListSelectedIds(event.target)"
+                                       actionListener="#{cc.assignSelected}">
+                            <i class="material-icons">navigate_next</i>
+                            <f:ajax execute="@this dual-list-selected-ids"
+                                    immediate="true"
+                                    onevent="materializetool.dualSelectList_onevent"
+                                    render="#{cc.attrs.render}"/>
+                        </h:commandLink>
+                    </div>
+                    <div class="dual-select-list-control-element">
+                        <h:commandLink styleClass="btn remove-selected #{not empty cc.attrs.removeLabel ? 'tooltipped' : ''}"
+                                       a:data-position="bottom"
+                                       a:data-tooltip="#{cc.attrs.removeLabel}"
+                                       actionListener="#{cc.removeSelected}">
+                            <i class="material-icons">navigate_before</i>
+                            <f:ajax execute="@this dual-list-selected-ids"
+                                    immediate="true"
+                                    onevent="materializetool.dualSelectList_onevent"
+                                    render="#{cc.attrs.render}"/>
+                        </h:commandLink>
+                    </div>
+                    <div class="dual-select-list-control-element">
+                        <h:commandLink styleClass="btn remove-all #{not empty cc.attrs.removeAllLabel ? 'tooltipped' : ''}"
+                                       a:data-position="bottom"
+                                       a:data-tooltip="#{cc.attrs.removeAllLabel}"
+                                       actionListener="#{cc.removeAll}">
+                            <i class="material-icons">first_page</i>
+                            <f:ajax execute="@this dual-list-selected-ids"
+                                    immediate="true"
+                                    onevent="materializetool.dualSelectList_onevent"
+                                    render="#{cc.attrs.render}"/>
+                        </h:commandLink>
+                    </div>
+                </h:panelGroup>
+
+                <h:panelGroup id="targetListPanel"
+                              layout="block"
+                              a:ts-ref="ts-ref-target-list"
+                              styleClass="col m5 s12 dual-select-list-panel ts-ref-target-list">
+
+                    <h:commandScript
+                            name="moveItemToIndexAtTargetList"
+                            actionListener="#{cc.moveItemToIndexAtTargetList}"
+                            execute="@this"
+                            render="@none"/>
+
+                    <ul jsf:id="targetList"
+                        class="collection dual-select-list-target">
+                        <ui:repeat binding="#{cc.targetUiRepeat}"
+                                   var="listItem"
+                                   varStatus="listItemStatus"
+                                   value="#{cc.attrs.targetCollection}">
+                            <li class="collection-item #{not empty cc.attrs.immutableCollection and cc.attrs.immutableCollection.contains(listItem) ? 'disabled' : ''} #{not empty cc.attrs.elementTooltip ? 'tooltipped' : ''}"
+                                data-id="#{cc.getTargetItemId(listItemStatus.index)}"
+                                data-position="bottom"
+                                data-tooltip="#{not empty cc.attrs.elementTooltip ? cc.getTooltip(cc.attrs.elementTooltip) : ''}">
+                                <composite:renderFacet required="true" name="output-element"/>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
+    </composite:implementation>
+</h:body>
+</html>

@@ -1,0 +1,289 @@
+/*
+ * Name: _ts_modal.scss
+ *
+ * Creator: Fabian Frank (ffr)
+ *
+ * Date: 2022-02-23 ff.
+ *
+ * Description: Common modal css classes.
+ *
+ * Copyright (c) 2022 The TechSpring GmbH. All rights reserved.
+ *
+*/
+
+// -----------------------------------------------------------------------------
+// Parameter(s)
+
+$modal-background-color: #363636 !default;
+$modal-title-background-color: #696969 !default;
+$modal-title-color: #ffffff !default;
+
+$modal-max-height: 90vh !default;
+$modal-max-width: 90vw !default;
+
+$modal-overflow-x: auto !default;
+$modal-overflow-y: hidden !default;
+
+
+@mixin modal-dimension($min-height: 450px, $min-width: 575px, $width: 75vw, $height: none) {
+  min-height: $min-height;
+  min-width: $min-width;
+  width: $width;
+
+  @if $height != none {
+    height: $height;
+  }
+}
+
+@mixin modal-scrollable() {
+  position: absolute;
+  height: calc(100% - 140px);
+  max-height: 100%;
+  margin-top: 0;
+  padding-top: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: calc(100% - 25px);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Styling information
+
+.modal {
+  background: $modal-background-color;
+  max-height: $modal-max-height;
+  max-width: $modal-max-width;
+
+  overflow-x: $modal-overflow-x;
+  overflow-y: $modal-overflow-y;
+
+
+  &.modal-wide-container {
+    width: 95%;
+  }
+
+  &.modal-tiny, &.datepicker-modal {
+    @include modal-dimension(170px, 400px, 40vw);
+  }
+
+  &.modal-small {
+    @include modal-dimension(220px, 460px, 55vw, 25vh);
+  }
+
+  &.modal-medium {
+    @include modal-dimension(450px, 575px, 75vw, 60vh);
+  }
+
+  &.modal-large {
+    @include modal-dimension(345px, 775px, 95vw, 90vh);
+  }
+
+  &.modal-auto {
+    width: min-content;
+  }
+
+  &.modal-flex {
+    height: 90vh;
+    width: fit-content;
+  }
+
+  &.modal-resizable, &.modal-flex {
+    overflow: clip;
+
+    > div:not(.ui-resizable-handle) {
+      height: 100%;
+      width: 100%;
+
+      > form {
+        height: 100%;
+        width: 100%;
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+
+        > .modal-content {
+          flex-grow: 2;
+          overflow-y: auto;
+
+          > .modal-main-content {
+            height: 100%;
+          }
+        }
+
+        > .modal-header {
+          flex-grow: 0;
+          flex-shrink: 0;
+        }
+
+        > .modal-footer {
+          flex-grow: 0;
+          flex-shrink: 0;
+          position: initial;
+          z-index: initial;
+          height: initial;
+          width: initial;
+          padding: initial;
+        }
+      }
+    }
+  }
+
+  > form {
+    padding: 10px;
+  }
+
+  // --------------------------------------------------------------------------
+  // Modal header
+
+  > form > .modal-header, .modal-header {
+    background-color: $modal-title-background-color;
+    color: $modal-title-color;
+
+    display: grid;
+    grid-template-columns: 90% 10%;
+    position: relative;
+    height: min-content;
+    padding-bottom: 4px;
+
+    > h4 {
+      height: 1.5em;
+      font-size: 1.4rem;
+      margin: 0 0 5px 5px;
+      padding: 7px 0 0 0;
+    }
+
+    > .modal-close-button {
+      border: none;
+      background-color: transparent;
+      width: max-content;
+      position: absolute;
+      padding: 7px 3px 0 0;
+      right: 0;
+
+      > a {
+        @include button-style;
+        background-color: $primary-header-bg-color;
+        float: right;
+        height: 26px;   // To make it the same size as the icon
+
+        > i {
+          color: $primary-text-color;
+          font-size: x-large;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Modal content
+
+  > form > .modal-content, .modal-content {
+    padding: 15px;
+
+    &.content-scrollable {
+      @include modal-scrollable();
+    }
+
+    .modal-content-scrollable {
+      @include modal-scrollable();
+    }
+
+    .ts-modal-content-min-height {
+      min-height: 20em;
+    }
+  }
+
+  > form > .modal-info, .modal-info {
+    font-size: 14px;
+    padding: 20px 15px 10px;
+  }
+
+  > form > .modal-info-dev, .modal-info-dev {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 20px 15px 10px;
+  }
+
+  // --------------------------------------------------------------------------
+  // Modal footer
+
+  > .modal-footer {
+    padding: 0 10px 5px 0 !important;    // Special style for the session timeout dialog
+  }
+
+  > form > .modal-footer, .modal-footer {
+    position: absolute;
+    z-index: 1000;
+    height: auto;
+    width: 100%;
+    padding: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+
+    > .footer-buttons {
+     padding: 0 10px 10px 0;
+     height: 100%;
+
+     > .btn:not(:last-child), .btn-flat:not(:last-child) {
+       margin: 10px 5px 0 0;
+     }
+
+     > .btn:last-child, .btn-flat:last-child {
+       margin: 10px 0 0 5px;
+     }
+
+      > .modal-save-warning {
+        position: relative;
+        top: 0.65em;
+        right: 0.4em;
+        color: #FF4500;
+        font-size: xx-large;
+        cursor: default;
+      }
+   }
+
+    .btn:not(:last-child), .btn-large:not(:last-child), .btn-small:not(:last-child), .btn-flat:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// modal-status
+
+.modal-status {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 100000;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  > .modal-status-content {
+    position: absolute;
+    padding: 15px;
+    background-color: $primary-bg-color;
+    color: $primary-text-color;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 24px 38px 3px, rgba(0, 0, 0, 0.12) 0px 9px 46px 8px, rgba(0, 0, 0, 0.2) 0px 11px 15px -7px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+  }
+}
+
+// TODO, wird anscheinend an ein paar anderen Stellen genutzt
+.modal-save-warning {
+  position: relative;
+  top: 0.65em;
+  right: 0.4em;
+  color: #FF4500;
+  font-size: xx-large;
+  cursor: default;
+}
+

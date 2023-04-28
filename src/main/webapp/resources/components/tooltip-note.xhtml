@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:sc="http://java.sun.com/jsf/composite/components"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite">
+<h:body>
+    <composite:interface>
+        <composite:attribute name="tooltipHeader" required="false" type="java.lang.String"/>
+        <composite:attribute name="tooltipBody" required="true" type="java.lang.String"/>
+        <composite:attribute name="emptyMessage" required="true"/>
+
+        <composite:attribute name="isEditable" type="boolean" default="false"/>
+        <composite:attribute name="isLeftBound" type="boolean" default="false"/>
+        <composite:attribute name="paddingRight" default="0"/>
+        <composite:attribute name="paddingLeft" default="0"/>
+        <composite:attribute name="paddingUnit" default="px" shortDescription="Choose between availabe css units of length"/>
+    </composite:interface>
+    <composite:implementation>
+        <h:panelGroup
+                a:data-position="top"
+                a:data-tooltip="#{not empty cc.attrs.tooltipHeader ? cc.attrs.tooltipHeader : ''}#{empty cc.attrs.tooltipBody ? cc.attrs.emptyMessage : cc.attrs.tooltipBody}"
+                styleClass="tooltipped #{cc.attrs.isLeftBound ? 'left' : 'right'}"
+                style="padding-left:#{cc.attrs.paddingLeft}#{cc.attrs.paddingUnit}; padding-right: #{cc.attrs.paddingRight}#{cc.attrs.paddingUnit};">
+            <i class="material-icons tooltip-note #{empty cc.attrs.tooltipBody ? 'empty-notes' : 'notes'}">
+                mode_comment
+            </i>
+        </h:panelGroup>
+    </composite:implementation>
+</h:body>
+</html>

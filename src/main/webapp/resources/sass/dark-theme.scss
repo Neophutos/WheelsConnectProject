@@ -1,0 +1,223 @@
+@charset "UTF-8";
+
+@import "components/color-variables";
+
+$primary-header-bg-color: #9C9C9C;
+$primary-color: color("blue", "darken-4");
+$primary-bg-color: #fff;
+$primary-text-color: #275e8b;
+
+$secondary-color: color("blue", "lighten-2");
+$secondary-bg-color: #f5f5f5;
+
+$preliminary-remark-color: #85C61B;
+$random-sample-color: #7094AD;
+$note-color: #FFB300;
+
+$navbar-bg-color: #888888;
+$input-text-color: $primary-text-color;
+$input-font-size: 11px;
+$input-border: #275e8b;
+$text-disabled-color: black;
+
+$main-color: #275e8b;
+
+
+$select-many-checkbox-text-color-checked: #7094AD;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// collapsible
+$collapsible-header-color: #86B5D9;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// dropdown
+$dropdown-color: #275e8b;
+$dropdown-hover-bg-color: #d0e5f5;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Footer
+$footer-font-color: #000;
+$footer-bg-color: darken($primary-bg-color, 20%);
+
+// ---------------------------------------------------------------------------------------------------------------------
+// buttons
+$button-raised-color: #2e6e9e;
+$button-bg-color: #E8F4FD;
+$button-padding: 0 11px 0 11px;
+$button-height: 21px;
+$button-font-size: 11px;
+$button-icon-font-size: 0.8rem;
+$button-border: 1px solid #C5DBEC;
+$button-radius: 1px;
+$button-disabled-border: 1px solid rgba(0, 0, 0, 0);
+
+// ---------------------------------------------------------------------------------------------------------------------
+// table
+$table-tr-row-height: unset;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// collection
+$collection-line-height: 13px;
+
+
+$back-ground-color: white;
+$font-color: black;
+
+body {
+  background-color: $back-ground-color;
+  color: $font-color;
+}
+
+.modal {
+  background-color: $back-ground-color !important;
+}
+
+.ui-layout-north {
+  .header-panel {
+    width: 100%;
+    height: 100%;
+    background: url("../images/appnew1.png") no-repeat, #afcee6;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .headline {
+      font-size: 30px;
+      color: currentColor;
+      font-family: cursive;
+      padding-left: 205px;
+      margin-bottom: -20px;
+    }
+
+    div:nth-of-type(1) {
+      font-family: emoji;
+      position: absolute;
+      left: 43%;
+    }
+
+    .logout-btn a {
+      text-align: right;
+      line-height: 0;
+      padding-left: 6px;
+      border-radius: 5px;
+      font-weight: bold;
+      border: 1px solid rgb(197, 219, 236);
+      border-image: initial !important;
+      background: url(https://www.techspring-extern.de/easyQuery/javax.faces.resource/images/ui-bg_glass_85_dfeffc_1x400.png.xhtml?ln=primefaces-redmond) 50% 50% repeat-x rgb(223, 239, 252) !important;
+      line-height: 17px;
+      padding-left: 12px;
+    }
+  }
+
+}
+
+.page-content { // Main Container which holds header panel, left panel and page content
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .body-panel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+
+
+    > .left-panel {
+      display: flex;
+      flex-direction: column;
+      width: 186px;
+      hight: 95%;
+
+      > .user-panel {
+        padding: 5px;
+      }
+
+      > .left-panels {
+
+        .category-selection-actions {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+    }
+
+    > .main-content {
+      width: 100%;
+      padding: 10px;
+      margin: 5px;
+      background: transparent;
+    }
+  }
+
+  .execution-panel {
+    display: block;
+    margin: 10px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    background-color: lightblue;
+
+    .execution-btn {
+      padding-left: 5px;
+    }
+  }
+
+}
+
+[title=Abmelden] {
+  border-radius: 5px !important;
+  font-weight: bold;
+  line-height: 17px !important;
+  border: 1px solid rgb(197, 219, 236) !important;
+  border-image: initial !important;
+  background: url(https://www.techspring-extern.de/easyQuery/javax.faces.resource/images/ui-bg_glass_85_dfeffc_1x400.png.xhtml?ln=primefaces-redmond) 50% 50% repeat-x rgb(223, 239, 252) !important;
+  margin: 2px;
+}
+
+.dataTable {
+  color: $primary-color;
+}
+
+@import "components/variables";
+@import "ts_common_variables";
+
+// ---------------------------------------------------------------------------------------------------------------------
+// tooltips
+.material-tooltip {
+  color: #2E6E9E;
+  background-color: #fff;
+  border-color: #C5C5C5;
+  border-radius: 3px;
+  box-shadow: 0 0 5px #aaa;
+}
+
+.tooltip-content {
+  text-align: initial;
+  font-size: 12px;
+}
+
+$card-bg-color: $collapsible-header-color;
+$card-title-bg-color: $card-bg-color;
+$card-color: $primary-color;
+
+$collapsible-tabs-tabs-position: flex-end;
+$collapsible-tabs-icon-position: calc(100% - 10px);
+$collapsible-text-color: black;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Modal properties
+
+$modal-background-color: $primary-bg-color;
+$modal-title-background-color: $primary-header-bg-color;
+$modal-title-color: $primary-text-color;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// input
+$input-bg-color: #00000010;
+
+@import "components/common";
+@import "style";
+

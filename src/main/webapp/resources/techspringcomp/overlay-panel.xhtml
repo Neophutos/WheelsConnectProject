@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<h:body>
+    <composite:interface>
+        <composite:attribute name="title"/>
+        <composite:attribute name="style"/>
+        <composite:attribute name="styleClass"/>
+        <composite:attribute name="header"/>
+        <composite:attribute name="for" required="true"/>
+        <composite:attribute name="at" default="left bottom"/>
+        <composite:attribute name="my" default="left top"/>
+        <composite:attribute name="showEvent" default="click"/>
+        <composite:attribute name="showEffect"/>
+        <composite:attribute name="hideEvent" default="click"/>
+        <composite:attribute name="hideEffect"/>
+        <composite:attribute name="resizable" type="java.lang.Boolean" default="true"/>
+        <composite:attribute name="onShow"/>
+        <composite:attribute name="onHide"/>
+        <composite:attribute name="onclick" default="materializetool.hideOverlayPanel(this)"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGroup id="#{cc.id}"
+                      layout="block"
+                      rendered="#{cc.rendered}"
+                      title="#{not empty cc.attrs.title ? cc.attrs.title : ''}"
+                      onclick="#{cc.attrs.onclick}"
+                      a:overlaypanel-for="#{cc.attrs.for}"
+                      a:overlaypanel-my="#{cc.attrs.my}"
+                      a:overlaypanel-at="#{cc.attrs.at}"
+                      a:overlaypanel-showevent="#{cc.attrs.showEvent}"
+                      a:overlaypanel-showeffect="#{cc.attrs.showEffect}"
+                      a:overlaypanel-hideevent="#{cc.attrs.hideEvent}"
+                      a:overlaypanel-hideeffect="#{cc.attrs.hideEffect}"
+                      a:overlaypanel-onshow="#{cc.attrs.onShow}"
+                      a:overlaypanel-onhide="#{cc.attrs.onHide}"
+                      a:data-position="bottom"
+                      a:data-tooltip="#{not empty cc.attrs.title ? cc.attrs.title : ''}"
+                      styleClass="overlay-panel #{cc.attrs.resizable ? 'overlay-panel-resizable' : ''} #{not empty cc.attrs.styleClass ? cc.attrs.styleClass : ''} #{not empty cc.attrs.title ? 'tooltipped' : ''}"
+                      style="#{not empty cc.attrs.style ? cc.attrs.style : ''}">
+            <h:panelGroup layout="block"
+                          styleClass="overlay-panel-header">
+              <h:outputText rendered="#{not empty cc.attrs.header}"
+                            escape="false"
+                            value="#{cc.attrs.header}"
+                            styleClass="overlay-panel-header-text"/>
+
+                <h:panelGroup layout="block"
+                              onclick="materializetool.hideOverlayPanel(this)"
+                              styleClass="waves-effect waves-light btn btn-tiny tiny">
+                    <i class="material-icons">close</i>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <composite:insertChildren/>
+        </h:panelGroup>
+    </composite:implementation>
+</h:body>
+</html>

@@ -1,0 +1,235 @@
+/*
+ * Name: _ts_buttons.scss
+ *
+ * Creator: Michael Heyer (mhy)
+ *
+ * Date: 2022-02-08 ff.
+ *
+ * Description: Common button css classes.
+ *
+ * Copyright (c) 2022 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+$button-background-color: $primary-bg-color !default;
+
+/*
+ * Default button styling. Includes coloring and hover effect styling.
+ */
+@mixin button-style {
+  @include button-coloring;
+
+  &:hover {
+    @include button-hover-styling;
+  }
+}
+
+/*
+ * Default active button styling
+ */
+@mixin button-active-style {
+  background-color: $button-bg-color-active       !important;
+  color: $button-text-color-active                !important;
+
+  border: 1px solid $secondary-color              !important;
+  box-shadow: none                                !important;
+
+  * {
+    color: $button-text-color-active;
+  }
+}
+
+/*
+ * Default disabled button styling
+ */
+@mixin button-disabled-style {
+  background-color: $button-disabled-background   !important;
+  color: $button-disabled-color                   !important;
+  border: $button-disabled-border                 !important;
+  cursor: default                                 !important;
+  box-shadow: none                                !important;
+
+  * {
+    color: $button-disabled-color;
+  }
+
+}
+
+/*
+ * Button coloring. Includes styling information for coloring a basic button.
+ */
+@mixin button-coloring {
+  background-color: $button-background-color;
+  color: $primary-text-color;
+  border: 1px solid $secondary-color;
+}
+
+/*
+ * Default hovering effect for buttons.
+ */
+@mixin button-hover-styling {
+  color: $button-text-color-active            !important;
+  background-color: $button-bg-color-active   !important;
+
+  * {
+    color: $button-text-color-active          !important;
+  }
+
+  &:before {
+    color: $button-text-color-active          !important;
+  }
+
+  &:after {
+    color: $button-text-color-active          !important;
+  }
+}
+
+span {
+  &.default-button {
+    @include button-disabled-style;
+  }
+
+  &.btn {
+    @include button-disabled-style;
+  }
+
+  &.btn-tiny {
+    @include button-disabled-style;
+  }
+
+  &.btn-large {
+    @include button-disabled-style;
+  }
+
+  &.btn-flat {
+    @include button-disabled-style;
+  }
+}
+
+.default-button,
+.btn,
+.btn-tiny,
+.btn-large,
+.btn-flat {
+  &:not(span) {
+    @include button-style;
+  }
+
+  &.active {
+    @include button-active-style;
+  }
+
+  &.disabled {
+    @include button-disabled-style;
+  }
+
+  &[disabled] {
+    @include button-disabled-style;
+  }
+}
+
+.btn-tiny {
+  i {
+    font-size: 0.9rem;
+    line-height: inherit;
+  }
+
+  height: 14px;
+  line-height: 14px;
+  font-size: 10px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.btn-flat {
+  color: $primary-text-color;
+}
+
+.btn {
+  background-color: $button-bg-color;
+}
+
+.btn:not(:first-child) {
+  margin-left: 3px;
+}
+
+.btn:not(:last-child) {
+  margin-right: 3px;
+}
+
+// Disabled buttons, including JSF disabled buttons
+a.btn.disabled,
+button.btn.disabled,
+a.btn[disabled],
+button.btn[disabled],
+span.btn,
+span.btn-small,
+span.btn:hover,
+span.btn-small:hover,
+.disabled.btn-small,
+.btn-small.disabled {
+  //@include button-disabled-style;
+}
+
+/* Triple switch button group*/
+.btn-group {
+  position: relative;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  > .btn.active {
+    @include button-active-style;
+  }
+}
+.btn-group>.btn {
+  margin: 0;
+}
+
+.btn-group>.btn:first-child:not(:last-child) {
+  border-radius: 9999px 0 0 9999px;
+}
+.btn-group>.btn:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+.btn-group>.btn:last-child:not(:first-child),
+.btn-group>.dropdown-toggle:not(:first-child) {
+  border-radius: 0 9999px 9999px 0;
+}
+
+label.file-input-label i,
+input[type=file].btn,
+button.btn,
+a.btn,
+a.btn-flat,
+button.btn:hover,
+a.btn:hover,
+a.btn-flat:hover,
+button.btn:active,
+a.btn:active,
+a.btn-flat:active {
+  border: 1px solid $button-bg-color-active;
+  box-shadow: none;
+}
+
+a.btn:hover,
+a.btn:active,
+a.btn-flat:active,
+a.btn-flat:hover,
+button.btn:active,
+button.btn-flat:active {
+  @include button-coloring;
+}
+
+.toggle-theme {
+  margin-bottom: 10px;
+}
+
+
+
+

@@ -1,0 +1,801 @@
+/*
+ * Name: _ts_datatables.scss
+ *
+ * Creator: Michael Heyer (mhy)
+ *
+ * Date: 2022-02-08 ff.
+ *
+ * Description: Common datatables css classes.
+ *
+ * Copyright (c) 2022 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Variables
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Mixins
+@mixin mx-table-row {
+  background-color: $primary-bg-color;
+  color: $primary-text-color;
+  @extend tr;
+}
+
+@mixin mx-results-row {
+  background-color: $primary-bg-color;
+  color: $primary-text-color;
+  border-top: solid 1px $primary-text-color;
+}
+
+@mixin mx-row-borders {
+  border-bottom-color: $primary-text-color;
+  border-top-color: $primary-text-color;
+}
+
+@mixin mx-paginate-selected {
+  border: none;
+  background-image: none;
+  font-weight: bold;
+  color: $table-pagination-text-color !important;
+  background-color: $table-pagination-bg-color;
+}
+
+@mixin mx-paginate-non-selected {
+  border: none !important;
+  background-image: none;
+  color: $table-pagination-bg-color !important;
+}
+
+@mixin mx-sort-icon {
+  font-family: 'Material Icons', serif;
+  font-size: 20px;
+  font-weight: normal;
+  line-height: initial;
+  display: inline;
+  margin-left: 0;
+  top: 5px;
+  position: inherit;
+}
+
+@mixin mx-clear-filter-button {
+  &:hover {
+    cursor: pointer;
+    color: $input-disabled-color;
+  }
+}
+
+@mixin mx-dtr-control {
+  &:before {
+    color: $primary-text-color;
+  }
+}
+
+@mixin mx-details-toggle {
+  &:before {
+    @include button-coloring;
+    font-family: 'Cambria Math', sans-serif;
+    content: '≡';
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 2px;
+    line-height: 32.4px;
+    transition: .3s ease-out;
+  }
+}
+
+@mixin mx-hidden-tree-toggle {
+  tr:not(.has-children) td:first-child:not([style*='display:none']):before,
+  tr.has-children:not(.visible-children) td:first-child:not([style*='display:none']):before,
+  tr.has-children.visible-children td:first-child:not([style*='display:none']):before {
+    content: '';
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Styles
+
+.dataTables_wrapper {
+  .dt-searchfield-and-buttons {
+    padding-top: 1.5% !important;
+    min-height: 4rem;
+    padding-right: 1px;
+
+    .col {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .dataTables_filter {
+      text-align: left;
+      float: left;
+
+      input {
+        color: $primary-text-color;
+        margin-left: -5px !important;
+      }
+      .clear-input-btn {
+        @include mx-clear-filter-button;
+        float: right;
+        position: relative;
+        top: -40px;
+      }
+    }
+
+    .dt-buttons-panel {
+      padding-right: 1px !important;
+
+      div.dt-buttons {
+        float: right !important;
+
+        button {
+          &.filter-row-toggle:not(.active),
+          &.search-toggle:not(.active) {
+            background-color: $button-disabled-background;
+          }
+          .active-filter-invisible-warning {
+            color: #FF4500 !important;
+          }
+        }
+
+        .dt-button-collection {
+          background-color: $primary-bg-color;
+          width: max-content;
+          left: auto !important;
+          right: 0 !important;
+
+          &.colvis-button-collection {
+            right: 0;
+            div {
+              ul {
+                li {
+                  button {
+                    width: 100%;
+                  }
+                  .btn-small {
+                    min-width: fit-content;
+                    max-width: 100%;
+                    padding: 0 5px;
+                    white-space: nowrap;
+                  }
+                  .colvis-sub-column {
+                    background-color: #9C9C9C;
+                    color: $secondary-text-color;
+                    &:hover, &:not(.active) {
+                      background-color: $button-disabled-color;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          button {
+            margin-bottom: 3px;
+            width: auto;
+
+            &:not(.active) {
+              background-color: $button-bg-color-active;
+            }
+            &:not(.active):not(.colvis-filtered):after,
+            &.colvis-filtered:not(.active) i:after {
+              font-family: 'Material Icons', serif;
+              content: '\e8f5';
+              font-size: 20px;
+              font-weight: normal;
+              float: right;
+              margin-left: 20px;
+            }
+            &.colvis-filtered i {
+              transition: all .2s;
+            }
+            &.colvis-filtered i:hover {
+              color: darken($primary-text-color, 5%);
+            }
+          }
+          .btn {
+            margin-right: 0;
+          }
+        }
+
+        .btn {
+          margin-right: -1px;
+        }
+
+        .buttons-colvis {
+          .dt-down-arrow {
+            display: none;
+          }
+        }
+
+        .table-refresh-btn.table-dirty {
+          position: relative;
+
+          &::before {
+            content: '\e002';
+            font-family: 'Material Icons';
+            font-weight: normal;
+            text-transform: initial;
+            font-size: 2.5em;
+            position: absolute;
+            left: -40px;
+            top: -1px;
+            color: #FF4500;
+            font-style: normal;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+
+  table.dataTable {
+    box-sizing: inherit;
+
+    thead {
+      tr {
+        th {
+          @include mx-table-row;
+          @include mx-row-borders;
+          box-sizing: inherit;
+          border-radius: 0;
+          border-bottom: none;
+          padding: 3px 5px 4px 0;
+          position: relative;
+          background-color: unset;
+          background-image: none !important;
+          font-size: 110%;
+          font-weight: lighter;
+
+          &.details-column {
+            width: 0;
+            .all-details-btn {
+              @include mx-details-toggle;
+              border: 0;
+              display: flex;
+              width: 52px;
+              float: right;
+
+              &:before {
+                height: 32.4px;
+                width: 52px;
+              }
+            }
+          }
+
+          &.sorting:after,
+          &.sorting_asc:after,
+          &.sorting_desc:after {
+            @include mx-sort-icon;
+          }
+
+          &:not(.sorting_disabled).sorting:after {
+            content: "unfold_more";
+          }
+
+          &:not(.sorting_disabled).sorting_asc:after {
+            content: "expand_less";
+          }
+
+          &:not(.sorting_disabled).sorting_desc:after {
+            content: "expand_more";
+          }
+
+          &.last-header {
+            padding-right: 0;
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        @include mx-table-row;
+        min-height: $table-tr-row-height;
+        height: $table-tr-row-height;
+
+        &.even {
+          background-color: $table-bg-even-color;
+
+          td {
+            background-color: unset;
+          }
+        }
+
+        &.odd {
+          background-color: $table-bg-odd-color;
+
+          td {
+            background-color: unset;
+          }
+        }
+
+        &.child {
+          @include mx-table-row;
+
+          &.even {
+            background-color: $table-bg-even-color;
+
+            td {
+              .collection .collection-item {
+                background-color: $table-bg-even-color;
+              }
+            }
+
+            .dtr-details {
+              li:nth-child(2n) {
+                background-color: $table-bg-even-color;
+              }
+
+              li:nth-child(2n + 1) {
+                background-color: $table-bg-odd-color;
+              }
+            }
+          }
+
+          &.odd {
+            td {
+              background-color: $table-bg-odd-color;
+
+              .collection .collection-item {
+                background-color: $table-bg-odd-color;
+              }
+            }
+
+            .dtr-details {
+              li:nth-child(2n) {
+                background-color: $table-bg-odd-color;
+              }
+
+              li:nth-child(2n + 1) {
+                background-color: $table-bg-even-color;
+              }
+            }
+          }
+        }
+
+        &.results-row {
+          @include mx-results-row;
+
+          td {
+            @include mx-results-row;
+          }
+        }
+
+        th {
+          border-radius: 0;
+          padding: 3px 5px 4px 0;
+        }
+
+        td {
+          @include mx-row-borders;
+          border-radius: 0;
+          border-bottom: 1px solid;
+          box-sizing: inherit;
+          padding: 3px 0.5rem 4px 0;
+
+          &.last-cell {
+            padding-right: 0;
+          }
+
+          &.control {
+            &.details-cell {
+              width: 0;
+            }
+
+            &::before {
+              background-color: transparent;
+              box-shadow: none !important;
+            }
+          }
+        }
+      }
+    }
+
+    tfoot {
+      &.column-filter-group {
+        display: table-header-group;
+        position: relative;
+
+        &.erase-all-visible {
+          &:after {
+            content: "backspace";
+            text-rendering: optimizeLegibility;
+            font-feature-settings: 'liga';
+            font-size: 1.2rem;
+            font-family: 'Material Icons', serif;
+            font-weight: normal;
+            font-style: normal;
+            color: $primary-text-color;
+            position: absolute;
+            bottom: 1.2rem;
+            right: 6px;
+            z-index: 3;
+          }
+        }
+
+        .select-wrapper {
+          top: -0.6em;
+        }
+      }
+
+      tr {
+        td {
+          border-top: none;
+          padding-top: 0;
+          padding-left: 10px;
+          padding-bottom: 0;
+
+          &.control {
+            padding: 0;
+            width: 0;
+             }
+
+          &.last-footer {
+            padding-right: 0;
+          }
+
+          .column-filter-input {
+            margin-left: -10px;
+            width: 100%;
+            display: flex;
+
+            input {
+              height: auto;
+              padding-bottom: 9px;
+              line-height: normal;
+              min-width: 75px;
+            }
+            .clear-input-btn {
+              @include mx-clear-filter-button;
+            }
+          }
+
+          .select-wrapper {
+            margin-left: -10px;
+            margin-bottom: -3px;
+            width: 95%;
+
+            .select-icons {
+              position: absolute;
+              top: 25%;
+            }
+          }
+        }
+      }
+    }
+
+    &.datatable-empty {
+      tbody {
+        &::after {
+          content: attr(empty-message);
+          color: $primary-text-color;
+          display: inline-block;
+          width: 100%;
+          background-color: $table-bg-odd-color;
+          padding: 4px 5px 4px 0;
+          vertical-align: middle;
+          height: 32px;
+        }
+
+        tr {
+          display: none;
+        }
+      }
+
+      thead, tfoot {
+        display: none;
+      }
+    }
+
+    &.tree-table {
+      tbody {
+        tr {
+          &:not(.has-children) td:first-child:not([style*='display:none']):before {
+            content: '\00a0\00a0\00a0';
+          }
+          &.has-children {
+            &:not(.visible-children) td:first-child:not([style*='display:none']):before {
+              content: '⯈';
+            }
+            &.visible-children td:first-child:not([style*='display:none']):before {
+              content: '⯆';
+            }
+          }
+          td {
+            &:first-child {
+              &:not([style*='display:none']):before {
+                margin-right: 10px;
+                margin-left: calc(((var(--level, 0) - 1) * 15px));
+              }
+
+              .breadcrumbs {
+                display: flex;
+              }
+            }
+          }
+        }
+        &.tree-filtered {
+          @include mx-hidden-tree-toggle;
+          tr td:first-child:not([style*='display:none']):before {
+            margin-right: 0;
+            margin-left: 0;
+          }
+        }
+      }
+      &.tree-inactive {
+        tbody {
+          @include mx-hidden-tree-toggle;
+          tr td:first-child:not([style*='display:none']):before {margin-right: 0;
+            margin-left: 0;
+          }
+        }
+      }
+    }
+
+    &.dtr-column {
+      tbody {
+        tr {
+          th {
+            &.control {
+              @include mx-dtr-control;
+              @include mx-details-toggle;
+
+              &:before {
+                position: initial;
+                margin-left: 0;
+                margin-top: 0;
+              }
+            }
+            &.dtr-control {
+              @include mx-dtr-control;
+            }
+          }
+          td {
+            &.control {
+              @include mx-dtr-control;
+              @include mx-details-toggle;
+              padding-right: 0;
+
+              &:before {
+                float: right;
+                width: 50px;
+                height: 30.4px;
+                position: initial;
+                margin-left: 0;
+                margin-top: 0;
+              }
+            }
+            &.dtr-control {
+              @include mx-dtr-control;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .dataTables_paginate {
+    font-size: 18px;
+    display: flex;
+    float: left;
+    padding-top: 12px;
+    margin-right: 50px;
+
+    &.paging_input {
+      color: $primary-text-color;
+      font-size: $input-font-size;
+    }
+
+    .paginate_button {
+      padding: 0 10px;
+
+      &.current {
+        @include mx-paginate-selected;
+
+        &:hover {
+          @include mx-paginate-selected;
+        }
+      }
+
+      &:not(.current):hover {
+        background-color: transparent;
+      }
+
+      &:not(.current):not(.disabled) {
+        @include mx-paginate-non-selected;
+
+        &:hover {
+          color: $table-pagination-bg-color !important;
+        }
+      }
+    }
+
+    .ellipsis {
+      @include mx-paginate-non-selected;
+    }
+
+    .paginate_input {
+      min-width: 0;
+      width: min-content;
+      margin-top: -10px;
+      text-align: center;
+    }
+
+  }
+
+  .dataTables_length {
+    input {
+      color: $primary-text-color;
+    }
+    label {
+      font-size: inherit;
+    }
+    .select-wrapper {
+      display: inline-flex;
+      width: 40px;
+      margin-right: 20px;
+
+      .select-dropdown.dropdown-trigger {
+        text-align: right;
+      }
+    }
+  }
+
+  .dataTables_info {
+    color: $primary-text-color;
+    clear: none;
+    float: right;
+  }
+
+  .hidden-id-filter-toggle:not(.active) {
+    background-color: $button-disabled-color;
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Non-nested styles
+
+// Responsive Collapse Toggler
+table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:before {
+  background-color: $button-bg-color;
+  line-height: initial;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li {
+  padding-left: 8px;
+}
+
+.data-table-menu-btn {
+  margin-left: 0 !important;
+}
+
+.dataTable > tbody > tr.child > td.child > ul.dtr-details {
+  width: 100%;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li {
+  border-color: $primary-text-color;
+}
+
+table.dataTable > tbody > tr.child span.dtr-title {
+  width: 100%;
+  background-color: $table-sub-column-header-bg-color;
+  color: $table-sub-column-header-text-color;
+  font-weight: lighter;
+  font-size: 110%;
+  padding: 2px 5px;
+}
+
+table.dataTable > tbody > tr.child span.dtr-data {
+  padding: 5px 5px 0 5px;
+  display: inherit;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li:first-child {
+  padding-top: 0.5em;
+}
+
+.dtr-details a.right-indent {
+  margin-right: 0;
+}
+
+table.dataTable:not(.DTCR_clonedTable) {
+  /* important is required here for responsive design to work properly when the table is lying within a container element */
+  width: 100% !important;
+}
+
+table.dataTable:not(.demo-table) thead th.actions {
+  min-width: 160px;
+}
+
+.inner-table-container {
+  overflow-x: auto;
+  width: calc(100% - 5px);
+}
+
+table.dataTable thead .filter-row th:after {
+  content: none;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li:last-child {
+  border-bottom: solid 1px;
+}
+
+table.dataTable.dtr-column > tbody > tr.parent td.control:before,
+table.dataTable.dtr-column > tbody > tr.parent th.control:before,
+.all-details-btn.close:before {
+  content: '≢';
+}
+
+table.dataTable.dtr-column > tbody > tr > td.control:hover:before,
+table.dataTable.dtr-column > tbody > tr > th.control:hover:before,
+.all-details-btn:hover:before {
+  @include button-hover-styling;
+}
+
+table.dataTable thead th.details-column,
+table.dataTable tbody td.details-cell {
+  padding: 0;
+  text-align: center;
+}
+
+td[class*='number-column'],
+th.number-column-header {
+  text-align: right;
+}
+
+td[class*='number-column']:not(:last-child),
+th.number-column-header:not(:last-child) {
+  padding-right: 40px !important;
+}
+
+/*
+Fixed table header and footer.
+The sticky class is added to the header and footer with JS when it reaches its scroll position
+*/
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+  background-color: $primary-bg-color;
+}
+
+.actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.hovering-before:hover:before {
+  color: darken($primary-text-color, 25%);
+}
+
+.hovering-before:hover {
+  cursor: pointer;
+}
+
+.btn-small:not(.buttons-columnVisibility) {
+  min-width: 52px;
+  max-width: 52px;
+  padding: 0;
+}
+
+table.dataTable > tbody > tr.parent + tr.child ul.dtr-details > li.hidden-child {
+  display: none;
+}
+
+.dt-button-background {
+  background: rgba(0, 0, 0, 0.5) !important;
+}

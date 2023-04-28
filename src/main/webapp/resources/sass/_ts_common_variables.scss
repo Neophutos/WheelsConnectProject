@@ -1,0 +1,65 @@
+/*
+ * Name: _ts_common_variables.scss
+ *
+ * Creator: Michael Heyer (mhy)
+ *
+ * Date: 2020-03-27 ff.
+ *
+ * Description: Common scss variables.
+ *
+ * Copyright (c) 2020 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Common
+$primary-text-color: #ffffff !default;
+$secondary-text-color: #ffffff !default;
+$primary-bg-color: #363636 !default;
+$secondary-bg-color: #9C9C9C !default;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Navbar
+$nav-bar-text-color: $primary-color !default;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// input elements placeholder color
+$placeholder-text-color: color("grey", "base") !default;
+$button-bg-color-active: $secondary-color !default;
+$button-text-color-active: $primary-text-color !default;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// input elements
+$input-bg-color: transparent;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// datatable
+$table-bg-even-color: #eee !default;
+$table-bg-odd-color: #ddd !default;
+$table-bg-child-color: #bbb !default;
+$table-bg-highlight-color: #ccc !default;
+$table-tr-row-line-color: #dcdcdc !default;
+$table-tr-row-height: 55px !default;
+$table-pagination-bg-color: $button-bg-color-active !default;
+$table-pagination-text-color: $primary-text-color !default;
+$table-sub-column-header-bg-color: $primary-text-color !default;
+$table-sub-column-header-text-color: $primary-bg-color !default;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// StrDiff classes colors
+$diff-bg: #ffffff !default;
+$diff-new-color: #9ACD32 !default;
+$diff-delete-color: #CD3700 !default;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// collapsible
+$collapsible-toggle-bg-color: #696969 !default;
+$collapsible-toggle-text-color: $primary-text-color !default;
+$collapsible-text-color: $primary-text-color !default;
+
+@import "ts_components/ts_checkboxes";
+@import "ts_components/ts_radio-buttons";

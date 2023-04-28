@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:ec="http://java.sun.com/jsf/composite"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:body onload="$('.ts-datatable').DataTable().draw();"
+        style="cursor: auto;">
+
+    <ui:composition template="./templates/default.xhtml">
+        <ui:param name="pageTitle" value="springQuery"/>
+        <ui:param name="pageprefix" value="./"/>
+
+        <ui:define name="head">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+
+            <link rel="stylesheet"
+                  href="resources/js/jquery-layout/layout-default.css#{compileTimeUtils.versionAsFirstHttpParam}"
+                  type="text/css"/>
+            <script type="text/javascript"
+                    src="resources/js/jquery-layout/jquery.layout_and_plugins.min.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+
+            <script type="text/javascript"
+                    src="resources/js/tinycolor-min.js#{compileTimeUtils.versionAsFirstHttpParam}"></script>
+
+            <script type="text/javascript" src="/path/to/jquery.min.js"></script>
+            <script type="text/javascript" src="/path/to/jquery.highlite.js"></script>
+
+            <h:outputScript library="js" name="ts_uilayouthandler.js"/>
+
+        </ui:define>
+
+        <ui:define name="modal">
+            <ui:decorate template="#{pageprefix}modal/edit-category.xhtml"/>
+            <ui:decorate template="#{pageprefix}modal/modal-delete-category.xhtml"/>
+            <ui:decorate template="#{pageprefix}modal/edit-query.xhtml"/>
+            <ui:decorate template="#{pageprefix}modal/modal-delete-query.xhtml"/>
+            <ui:decorate template="#{pageprefix}modal/execution-info.xhtml"/>
+            <ui:decorate template="#{pageprefix}modal/filter-options.xhtml"/>
+            <ui:decorate template="#{pageprefix}modal/ref-column-selector.xhtml"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:panelGroup layout="block"
+                          styleClass="ui-layout-center">
+                <h:panelGroup styleClass="body-panel">
+
+
+                    <h:panelGroup layout="block">
+                        <h:dataTable value="#{fahrzeugController.getAllFahrzeuge()}"
+                                     styleClass="all-fahrzeuge-table dataTable"
+                                     var="fahrzeug">
+                            <h:column headerClass="header-displayName"
+                                      footerClass="non-filterable"
+                                      a:category-id="#{fahrzeug.baujahr}">
+                                <f:facet name="header">
+                                    <h:outputText value="Name"/>
+                                </f:facet>
+                                <f:facet name="footer">
+                                    <h:outputText value=""/>
+                                </f:facet>
+                                <h:panelGroup layout="block"
+                                              styleClass="category-table-entry tooltipped ellipsis"
+                                              a:data-tooltip="#{fahrzeug.modell}"
+                                              a:data-position="bottom">
+                                    <h:outputText value="#{fahrzeug.modell}"/>
+                                </h:panelGroup>
+                            </h:column>
+                        </h:dataTable>
+                    </h:panelGroup>
+
+
+                    <h:outputText value="#{fahrzeugController.test}"/>
+
+
+                </h:panelGroup>
+            </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

@@ -1,42 +1,29 @@
 package com.WheelsConnect.controller;
 
-import com.WheelsConnect.service.FahrzeugService;
 import com.WheelsConnect.model.Fahrzeug;
+import com.WheelsConnect.service.FahrzeugService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.faces.bean.ApplicationScoped;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/fahrzeuge")
+@ApplicationScoped
+@Controller("fahrzeugController")
 public class FahrzeugController {
 
     @Autowired
     private FahrzeugService fahrzeugService;
 
-    @GetMapping
-    public List<Fahrzeug> findAll() {
+    //---------------------------------------------------
+    // getter / setter
+
+    public List<Fahrzeug> getAllFahrzeuge() {
         return fahrzeugService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Fahrzeug findById(@PathVariable Long id) {
-        return fahrzeugService.findById(id);
-    }
-
-    @PostMapping
-    public Fahrzeug save(@RequestBody Fahrzeug fahrzeug) {
-        return fahrzeugService.save(fahrzeug);
-    }
-
-    @PutMapping("/{id}")
-    public Fahrzeug update(@PathVariable Long id, @RequestBody Fahrzeug fahrzeug) {
-        fahrzeug.setId(id);
-        return fahrzeugService.save(fahrzeug);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        fahrzeugService.deleteById(id);
+    public String test() {
+        return "TEST 1 success";
     }
 }

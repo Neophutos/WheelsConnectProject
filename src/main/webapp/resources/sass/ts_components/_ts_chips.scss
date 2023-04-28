@@ -1,0 +1,22 @@
+.chip {
+  max-width: 100%;
+
+  &:focus {
+    color: $primary-text-color;
+  }
+
+  .chip-text-container {
+    max-width: 85%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+}
+
+table {
+  .rule-size {
+    min-width: 200px !important;
+    max-width: 350px !important;
+  }
+}

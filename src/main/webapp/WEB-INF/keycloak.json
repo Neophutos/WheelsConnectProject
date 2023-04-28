@@ -1,0 +1,12 @@
+{
+  "realm": "${keycloak.auth.realm}",
+  "auth-server-url": "${keycloak.auth.server.url}",
+  "disable-trust-manager": true,
+  "ssl-required": "external",
+  "resource": "${keycloak.auth.resource}",
+  "public-client": true,
+  "principal-attribute": "preferred_username",
+  "use-resource-role-mappings" : true,
+  "confidential-port": 0,
+  "proxy-url": "${keycloak.auth.proxy.url}"
+}

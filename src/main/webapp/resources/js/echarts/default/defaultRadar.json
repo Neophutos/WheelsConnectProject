@@ -1,0 +1,22 @@
+{
+  "textStyle": {
+    "fontSize": "8"
+  },
+  "legend": {
+    "left": "left",
+    "orient": "horizontal",
+
+    "textStyle": {
+      "color": "#ffffff"
+    }
+  },
+  "radar": {
+      "radius": "50%",
+      "center": ["50%", "40%"],
+      "name": {
+        "textStyle": {
+          "color": "#ffffff"
+        }
+      }
+    }
+}

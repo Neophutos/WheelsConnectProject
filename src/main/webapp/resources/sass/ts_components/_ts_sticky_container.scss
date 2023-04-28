@@ -1,0 +1,98 @@
+/*
+ * Name: _ts_sticky_container.scss
+ *
+ * Creator: Michael Heyer (mhy)
+ *
+ * Date: 2022-02-08 ff.
+ *
+ * Description: Common sticky container css classes.
+ *
+ * Copyright (c) 2022 The TechSpring GmbH. All rights reserved.
+ *
+ * $Author$
+ * $Revision$
+ * $Date$
+ * $Id$
+*/
+
+.sticky-container {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.sticky-container64 {
+  position: sticky;
+  top: 64px;
+  z-index: 10;
+}
+
+table.sticky-header > thead > tr > th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: $primary-bg-color;
+}
+
+table.sticky-header > tfoot > tr > td {
+  position: sticky;
+  top: 32px;
+  z-index: 2;
+  background-color: $primary-bg-color;
+}
+
+@mixin default-sticky-style {
+  position: sticky !important;
+  z-index: 2;
+}
+
+table.sticky-header64 {
+  > thead > tr, > thead > tr > th {
+    @include default-sticky-style;
+    background-color: $primary-bg-color;
+    top: 64px;
+  }
+
+  > thead > tr.sticky-stuck {
+    line-height: 28px;
+  }
+
+  > thead > tr.sticky-stuck > th {
+    max-width: 145px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  > tbody > tr.parent, > tbody > tr.parent > td {
+    @include default-sticky-style;
+    top: 146px;
+  }
+
+  > tbody > tr.parent.odd > td {
+    background-color: $table-bg-odd-color;
+  }
+
+  > tbody > tr.parent.even > td {
+    background-color: $table-bg-even-color;
+  }
+
+  > tfoot > tr, > tfoot > tr > td {
+    @include default-sticky-style;
+    z-index: 3;
+    background-color: $primary-bg-color;
+    top: 100px;
+  }
+}
+
+table.sticky-parent:not(.sticky-header):not(.sticky-header64) > tbody > tr.parent > td {
+  position: sticky !important;
+  top: 0;
+  z-index: 3;
+}
+
+table.sticky-parent.sticky-header > tbody > tr.parent > td {
+  position: sticky !important;
+  top: 64px;
+  z-index: 3;
+}

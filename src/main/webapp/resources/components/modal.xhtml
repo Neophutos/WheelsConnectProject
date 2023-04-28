@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<h:body>
+    <composite:interface componentType="modalComposite">
+        <composite:attribute name="size"
+                             default="tiny"
+                             shortDescription="(tiny, small, medium, large, auto): Defines the size of the modal dialoge. The default value is tiny"/>
+        <composite:attribute name="tsRef"/>
+        <composite:attribute name="styleClass"/>
+        <composite:attribute name="style"/>
+        <composite:attribute name="options"/>
+        <composite:attribute name="contentScrollable"/>
+        <composite:attribute name="render" default="true"/>
+        <composite:attribute name="formEnctype"/>
+        <composite:attribute name="formAcceptCharSet"/>
+        <composite:attribute name="title" default=""/>
+        <composite:attribute name="description"/>
+        <composite:attribute name="modalInfoDev"/>
+        <composite:attribute name="buttonsLeft" default="false"/>
+
+        <composite:facet name="title"/>
+        <composite:facet name="footer"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <div id="#{cc.clientId}-modal-dialog"
+             ts-ref="#{cc.attrs.tsRef}"
+             dialog-custom-options="#{cc.attrs.options}"
+             style="#{not empty cc.attrs.style ? cc.attrs.style : ''}"
+             class="#{cc.clientId}-modal-dialog modal modal-#{not empty cc.attrs.size ? cc.attrs.size : 'tiny'} #{not empty cc.attrs.styleClass ? cc.attrs.styleClass : ''}">
+            <h:panelGroup id="#{cc.clientId}-modal-dialog"
+                          layout="block">
+                <h:form id="#{cc.clientId.concat('-modal-form')}"
+                        rendered="#{not empty cc.clientId and empty cc.attrs.render or cc.attrs.render}"
+                        enctype="#{not empty cc.attrs.formEnctype ? cc.attrs.formEnctype : 'multipart/form-data'}"
+                        acceptcharset="#{not empty cc.attrs.formAcceptCharSet ? cc.attrs.formAcceptCharSet : 'ISO-8859-15'}">
+                    <h:panelGroup layout="block" styleClass="modal-header">
+                        <h4 jsf:rendered="#{not empty cc.attrs.title}">#{cc.attrs.title}</h4>
+                        <h:panelGroup rendered="#{not empty cc.facets.title}">
+                            <composite:renderFacet name="title"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block"
+                                  styleClass="modal-content #{cc.attrs.contentScrollable ? 'content-scrollable' : ''}">
+                        <h:panelGroup layout="block" styleClass="modal-main-content">
+                            <composite:insertChildren/>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" rendered="#{not empty cc.attrs.description}"
+                                      styleClass="modal-info">
+                            <h:outputText escape="false" value="#{cc.attrs.description}"/>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" rendered="#{not empty cc.attrs.modalInfoDev}"
+                                      styleClass="modal-info-dev">
+                            <h:outputText escape="false" value="#{cc.attrs.modalInfoDev}"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:panelGroup id="#{cc.clientId}-modal-buttons"
+                                  layout="block"
+                                  styleClass="modal-footer  #{cc.attrs.buttonsLeft ? 'modal-footer-left' : ''}">
+                        <h:panelGroup layout="block" styleClass="footer-buttons">
+                            <composite:renderFacet name="footer"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </composite:implementation>
+</h:body>
+
+</html>
