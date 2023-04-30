@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import KundenTable from './components/KundenTable';
-import StandortList from "./components/StandortTable";
-import BuchungList from "./components/BuchungTable";
-import FahrzeugList from "./components/FahrzeugTable";
+import StandortTable from "./components/StandortTable";
+import BuchungTable from "./components/BuchungTable";
+import FahrzeugTable from "./components/FahrzeugTable";
 
 import './App.css';
 
