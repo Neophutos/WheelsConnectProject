@@ -24,9 +24,14 @@ public class Kunde {
     private String telefonnummer;
     private String email;
 
-    public Kunde(String vorname, String nachname) {
+    public Kunde(Long id, String vorname, String nachname, LocalDate geburtsdatum, String adresse, String telefonnummer, String email) {
+        this.id = id;
         this.vorname = vorname;
         this.nachname = nachname;
+        this.geburtsdatum = geburtsdatum;
+        this.adresse = adresse;
+        this.telefonnummer = telefonnummer;
+        this.email = email;
     }
 
     // Getter und Setter

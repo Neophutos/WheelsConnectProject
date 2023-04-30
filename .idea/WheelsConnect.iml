@@ -15,6 +15,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
+          <factory-entry name="WheelsConnect" value="09eabfd1-cae1-41a2-a0ee-190ae9f1da51" />
           <factory-entry name="entityManagerFactory" />
         </datasource-mapping>
         <naming-strategy-map />
@@ -23,7 +24,12 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="SecurityConfiguration" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/SecurityConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/WheelsConnect/WheelsConnectApplication.java</file>
+        </fileset>
+      </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_17">
