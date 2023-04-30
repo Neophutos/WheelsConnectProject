@@ -7,6 +7,7 @@ import KundenForm from "./KundenForm";
 const KundenTable = () => {
     const [data, setData] = useState([]);
     const [editingId, setEditingId] = useState(null);
+    const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -77,9 +78,11 @@ const KundenTable = () => {
 
     return (
         <div>
-            <h2>Kunden hinzufügen</h2>
-            <KundenForm onSubmit={handleAdd} />
-            <h2>Kundenliste</h2>
+            <h2>Kunden</h2>
+            <button onClick={() => setShowForm(!showForm)}>
+                {showForm ? 'Formular ausblenden' : 'Kunden hinzufügen'}
+            </button>
+            {showForm && <KundenForm onSubmit={handleAdd} />}
             <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
                 <thead>
                 {headerGroups.map((headerGroup) => (

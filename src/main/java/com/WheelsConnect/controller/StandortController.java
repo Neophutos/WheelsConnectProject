@@ -1,42 +1,54 @@
 package com.WheelsConnect.controller;
 
-import com.WheelsConnect.service.StandortService;
 import com.WheelsConnect.model.Standort;
+import com.WheelsConnect.repository.StandortRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/standorte")
+@RequestMapping("/standorte")
 public class StandortController {
 
-    @Autowired
-    private StandortService standortService;
+    private final StandortRepository standortRepository;
+
+    public StandortController(StandortRepository standortRepository) {
+        this.standortRepository = standortRepository;
+    }
 
     @GetMapping
-    public List<Standort> findAll() {
-        return standortService.findAll();
+    public List<Standort> getStandorte() {
+        return standortRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Standort findById(@PathVariable Long id) {
-        return standortService.findById(id);
+    public Standort getStandort(@PathVariable Long id) {
+        return standortRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     @PostMapping
-    public Standort save(@RequestBody Standort standort) {
-        return standortService.save(standort);
+    public ResponseEntity createStandort(@RequestBody Standort standort) throws URISyntaxException {
+        Standort savedStandort = standortRepository.save(standort);
+        return ResponseEntity.created(new URI("/standorte/" + savedStandort.getId())).body(savedStandort);
     }
 
     @PutMapping("/{id}")
-    public Standort update(@PathVariable Long id, @RequestBody Standort standort) {
-        standort.setId(id);
-        return standortService.save(standort);
+    public ResponseEntity updateStandort(@PathVariable Long id, @RequestBody Standort standort) {
+        Standort currentStandort = standortRepository.findById(id).orElseThrow(RuntimeException::new);
+        currentStandort.setName(standort.getName());
+        currentStandort.setAdresse(standort.getAdresse());
+        currentStandort = standortRepository.save(standort);
+
+        return ResponseEntity.ok(currentStandort);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        standortService.deleteById(id);
+    public ResponseEntity deleteStandort(@PathVariable Long id) {
+        standortRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

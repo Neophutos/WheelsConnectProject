@@ -1,42 +1,59 @@
 package com.WheelsConnect.controller;
 
-import com.WheelsConnect.service.FahrzeugService;
 import com.WheelsConnect.model.Fahrzeug;
+import com.WheelsConnect.repository.FahrzeugRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/fahrzeuge")
+@RequestMapping("/fahrzeuge")
 public class FahrzeugController {
 
-    @Autowired
-    private FahrzeugService fahrzeugService;
+    private final FahrzeugRepository fahrzeugRepository;
+
+    public FahrzeugController(FahrzeugRepository fahrzeugRepository) {
+        this.fahrzeugRepository = fahrzeugRepository;
+    }
 
     @GetMapping
-    public List<Fahrzeug> findAll() {
-        return fahrzeugService.findAll();
+    public List<Fahrzeug> getFahrzeuge() {
+        return fahrzeugRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Fahrzeug findById(@PathVariable Long id) {
-        return fahrzeugService.findById(id);
+    public Fahrzeug getFahrzeug(@PathVariable Long id) {
+        return fahrzeugRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     @PostMapping
-    public Fahrzeug save(@RequestBody Fahrzeug fahrzeug) {
-        return fahrzeugService.save(fahrzeug);
+    public ResponseEntity createFahrzeug(@RequestBody Fahrzeug fahrzeug) throws URISyntaxException {
+        Fahrzeug savedFahrzeug = fahrzeugRepository.save(fahrzeug);
+        return ResponseEntity.created(new URI("/fahrzeuge/" + savedFahrzeug.getId())).body(savedFahrzeug);
     }
 
     @PutMapping("/{id}")
-    public Fahrzeug update(@PathVariable Long id, @RequestBody Fahrzeug fahrzeug) {
-        fahrzeug.setId(id);
-        return fahrzeugService.save(fahrzeug);
+    public ResponseEntity updateFahrzeug(@PathVariable Long id, @RequestBody Fahrzeug fahrzeug) {
+        Fahrzeug currentFahrzeug = fahrzeugRepository.findById(id).orElseThrow(RuntimeException::new);
+        currentFahrzeug.setMarke(fahrzeug.getMarke());
+        currentFahrzeug.setModell(fahrzeug.getModell());
+        currentFahrzeug.setTyp(fahrzeug.getTyp());
+        currentFahrzeug.setBaujahr(fahrzeug.getBaujahr());
+        currentFahrzeug.setFarbe(fahrzeug.getFarbe());
+        currentFahrzeug.setVerfuegbarkeit(fahrzeug.isVerfuegbarkeit());
+        currentFahrzeug.setStandort(fahrzeug.getStandort());
+        currentFahrzeug = fahrzeugRepository.save(fahrzeug);
+
+        return ResponseEntity.ok(currentFahrzeug);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        fahrzeugService.deleteById(id);
+    public ResponseEntity deleteFahrzeug(@PathVariable Long id) {
+        fahrzeugRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
