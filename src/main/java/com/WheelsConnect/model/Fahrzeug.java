@@ -17,20 +17,18 @@ public class Fahrzeug {
     private String typ;
     private int baujahr;
     private String farbe;
-    private boolean verfuegbarkeit;
     private Double preis;
 
     @ManyToOne
     private Standort standort;
 
     // Constructor
-    public Fahrzeug(String marke, String modell, String typ, int baujahr, String farbe, boolean verfuegbarkeit, Standort standort) {
+    public Fahrzeug(String marke, String modell, String typ, int baujahr, String farbe, Standort standort) {
         this.marke = marke;
         this.modell = modell;
         this.typ = typ;
         this.baujahr = baujahr;
         this.farbe = farbe;
-        this.verfuegbarkeit = verfuegbarkeit;
         this.standort = standort;
     }
 
@@ -91,14 +89,6 @@ public class Fahrzeug {
 
     public void setFarbe(String farbe) {
         this.farbe = farbe;
-    }
-
-    public boolean isVerfuegbarkeit() {
-        return verfuegbarkeit;
-    }
-
-    public void setVerfuegbarkeit(boolean verfuegbarkeit) {
-        this.verfuegbarkeit = verfuegbarkeit;
     }
 
     public Standort getStandort() {

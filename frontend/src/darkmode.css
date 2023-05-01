@@ -1,0 +1,61 @@
+/* darkmode.css */
+body {
+    background-color: #121212;
+    color: #f5f5f5;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+th,
+td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+th {
+    vertical-align: bottom;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-label,
+.form-select,
+.form-control {
+    color: #f5f5f5;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: rgba(255, 255, 255, 0.25);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
+button {
+    color: #f5f5f5;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
+.modal-content {
+    background-color: #121212;
+    color: #f5f5f5;
+    border-color: rgba(255, 255, 255, 0.15);
+}
