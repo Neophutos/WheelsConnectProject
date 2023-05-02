@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-const BuchungsForm = ({ handleClose }) => {
+const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
     const [kunden, setKunden] = useState([]);
     const [fahrzeuge, setFahrzeuge] = useState([]);
 
@@ -10,6 +10,18 @@ const BuchungsForm = ({ handleClose }) => {
         fetchKunden();
         fetchFahrzeuge();
     }, []);
+
+    useEffect(() => {
+        if (initialValues) {
+            setBuchung({
+                startdatum: initialValues.startdatum || "",
+                enddatum: initialValues.enddatum || "",
+                buchungsstatus: initialValues.buchungsstatus || "Reserviert",
+                kunde: initialValues.kunde || null,
+                fahrzeug: initialValues.fahrzeug || null,
+            });
+        }
+    }, [initialValues]);
 
     const fetchKunden = async () => {
         try {
@@ -36,6 +48,13 @@ const BuchungsForm = ({ handleClose }) => {
         kunde: null,
         fahrzeug: null,
     });
+
+    const buchungsstatusOptions = [
+        'Reserviert',
+        'Abgeholt',
+        'Storniert',
+        'Zurückgegeben',
+    ];
 
     const handleChange = (e) => {
         setBuchung({ ...buchung, [e.target.name]: e.target.value });
@@ -154,13 +173,21 @@ const BuchungsForm = ({ handleClose }) => {
             </Form.Group>
 
             <Form.Group>
-                <Form.Label>Buchungsstatus</Form.Label>
+                <Form.Label>Status</Form.Label>
                 <Form.Control
-                    plaintext
-                    readOnly
-                    name='buchungsstatus'
+                    as="select"
+                    name="buchungsstatus"
                     value={buchung.buchungsstatus}
-                />
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="">Status auswählen</option>
+                    {buchungsstatusOptions.map((status, index) => (
+                        <option key={index} value={status}>
+                            {status}
+                        </option>
+                    ))}
+                </Form.Control>
             </Form.Group>
 
             <Button variant='primary' type='submit'>

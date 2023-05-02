@@ -3,11 +3,14 @@ import { useTable } from 'react-table';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import BuchungsForm from './BuchungsForm';
+import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'; // Importieren Sie die Icons
 
 const BuchungTable = () => {
     const [data, setData] = useState([]);
-    const [editingId, setEditingId] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [selectedBuchung, setSelectedBuchung] = useState(null);
+    const [editingModal, setEditingModal] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -25,13 +28,21 @@ const BuchungTable = () => {
 
     const handleUpdate = async (id, buchung) => {
         await axios.put(`/buchungen/${id}`, buchung);
-        setEditingId(null);
         fetchData();
     };
 
     const handleDelete = async (id) => {
         await axios.delete(`/buchungen/${id}`);
         fetchData();
+    };
+
+    const handleShowEditForm = (buchung) => {
+        setSelectedBuchung(buchung);
+        setEditingModal(true);
+    };
+    const handleShowDeleteConfirm = (buchung) => {
+        setSelectedBuchung(buchung);
+        setShowDeleteConfirm(true);
     };
 
     const columns = React.useMemo(
@@ -98,6 +109,42 @@ const BuchungTable = () => {
                     <BuchungsForm onSubmit={handleAdd} />
                 </Modal.Body>
             </Modal>
+            <Modal show={editingModal} onHide={() => setEditingModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Buchung bearbeiten</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <BuchungsForm
+                        onSubmit={(updatedBuchung) => {
+                            handleUpdate(selectedBuchung.id, updatedBuchung);
+                            setEditingModal(false);
+                        }}
+                        initialValues={selectedBuchung}
+                    />
+                </Modal.Body>
+            </Modal>
+            <Modal show={showDeleteConfirm} onHide={() => setShowDeleteConfirm(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Löschen bestätigen</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Möchten Sie diesen Eintrag wirklich löschen?
+                    <div className="text-right">
+                        <Button
+                            variant="danger"
+                            onClick={() => {
+                                handleDelete(selectedBuchung.id);
+                                setShowDeleteConfirm(false);
+                            }}
+                        >
+                            Löschen
+                        </Button>
+                        <Button variant="secondary" onClick={() => setShowDeleteConfirm(false)}>
+                            Abbrechen
+                        </Button>
+                    </div>
+                </Modal.Body>
+            </Modal>
             <table variant={"dark"} className={"table-dark"} {...getTableProps()} style={{ border: 'solid 1px blue' }}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
@@ -138,20 +185,16 @@ const BuchungTable = () => {
                                 );
                             })}
                             <td>
-                                {editingId === row.original.id ? (
-                                    <BuchungsForm
-                                        onSubmit={(updatedBuchung) =>
-                                            handleUpdate(row.original.id, updatedBuchung)
-                                        }
-                                        initialValues={row.original}
-                                    />
-                                ) : (
-                                    <button onClick={() => setEditingId(row.original.id)}>
-                                        Bearbeiten
-                                    </button>
-                                )}
-                                <button onClick={() => handleDelete(row.original.id)}>
-                                    Löschen
+                                <button
+                                    onClick={() => handleShowEditForm(row.original)}
+                                    style={{ background: 'none',border: 'none', color: 'blue', cursor: 'pointer' }}>
+                                    <AiOutlineEdit />
+                                </button>
+                                <button
+                                    onClick={() => handleShowDeleteConfirm(row.original)}
+                                    style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
+                                >
+                                    <AiOutlineDelete />
                                 </button>
                             </td>
                         </tr>
