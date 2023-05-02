@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/buchungen")
@@ -28,6 +31,20 @@ public class BuchungController {
     @GetMapping("/{id}")
     public Buchung getBuchung(@PathVariable Long id) {
         return buchungRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
+    @PostMapping("/check-availability")
+    public ResponseEntity<?> checkAvailability(@RequestBody Map<String, String> request) {
+        Long fahrzeugId = Long.parseLong(request.get("fahrzeugId"));
+        LocalDate startdatum = LocalDate.parse(request.get("startdatum"));
+        LocalDate enddatum = LocalDate.parse(request.get("enddatum"));
+
+        List<Buchung> conflictingBuchungen = buchungRepository.findByFahrzeugIdAndStartdatumLessThanEqualAndEnddatumGreaterThanEqual(fahrzeugId, enddatum, startdatum);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("available", conflictingBuchungen.isEmpty());
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping

@@ -102,12 +102,24 @@ const FahrzeugForm = ({ handleClose }) => {
             <Form.Group>
                 <Form.Label>Baujahr</Form.Label>
                 <Form.Control
-                    type="date"
+                    as="select"
                     name="baujahr"
                     value={fahrzeug.baujahr}
                     onChange={handleChange}
                     required
-                />
+                >
+                    <option value="">Wählen Sie ein Baujahr</option>
+                    {(() => {
+                        const currentYear = new Date().getFullYear();
+                        const startYear = 1900;
+                        const years = Array.from({ length: currentYear - startYear + 1 }, (_, index) => startYear + index);
+                        return years.map((year) => (
+                            <option key={year} value={year}>
+                                {year}
+                            </option>
+                        ));
+                    })()}
+                </Form.Control>
             </Form.Group>
 
             <Form.Group>
