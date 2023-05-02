@@ -74,8 +74,6 @@ const StandortForm = ({ handleClose }) => {
                 />
             </Form.Group>
 
-            // ... Rest der Formularfelder ...
-
             <Button type="submit">Speichern</Button>
         </Form>
     );

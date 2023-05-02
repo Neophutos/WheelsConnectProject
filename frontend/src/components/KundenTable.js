@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
+import { Modal, Button } from 'react-bootstrap';
 import KundenForm from "./KundenForm";
 
 const KundenTable = () => {
@@ -79,10 +80,15 @@ const KundenTable = () => {
     return (
         <div>
             <h2>Kunden</h2>
-            <button onClick={() => setShowForm(!showForm)}>
-                {showForm ? 'Formular ausblenden' : 'Kunden hinzufügen'}
-            </button>
-            {showForm && <KundenForm onSubmit={handleAdd} />}
+            <Button onClick={() => setShowForm(true)}>Kunde hinzufügen</Button>
+            <Modal show={showForm} onHide={() => setShowForm(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Kunde hinzufügen</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <KundenForm onSubmit={handleAdd} />
+                </Modal.Body>
+            </Modal>
             <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
