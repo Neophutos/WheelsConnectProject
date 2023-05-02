@@ -72,8 +72,8 @@ const BuchungTable = () => {
                 accessor: 'kunde',
                 Cell: ({ cell: { value } }) => (
                     <span>
-            {value.vorname} {value.nachname}
-        </span>
+                        {value.vorname} {value.nachname}
+                    </span>
                 ),
             },
             {
@@ -81,8 +81,8 @@ const BuchungTable = () => {
                 accessor: 'fahrzeug',
                 Cell: ({ cell: { value } }) => (
                     <span>
-            {value.marke} {value.modell}
-        </span>
+                        {value.marke} {value.modell}
+                    </span>
                 ),
             },
         ],
@@ -106,7 +106,7 @@ const BuchungTable = () => {
                     <Modal.Title>Buchung hinzufügen</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <BuchungsForm onSubmit={handleAdd} />
+                    <BuchungsForm onSubmit={handleAdd} handleClose={() => setShowForm(false)}/>
                 </Modal.Body>
             </Modal>
             <Modal show={editingModal} onHide={() => setEditingModal(false)}>
@@ -120,6 +120,7 @@ const BuchungTable = () => {
                             setEditingModal(false);
                         }}
                         initialValues={selectedBuchung}
+                        handleClose={() => setEditingModal(false)}
                     />
                 </Modal.Body>
             </Modal>
@@ -145,20 +146,12 @@ const BuchungTable = () => {
                     </div>
                 </Modal.Body>
             </Modal>
-            <table variant={"dark"} className={"table-dark"} {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+            <table className={"table-dark"} {...getTableProps()}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => (
-                            <th
-                                {...column.getHeaderProps()}
-                                style={{
-                                    borderBottom: 'solid 3px red',
-                                    background: 'aliceblue',
-                                    color: 'black',
-                                    fontWeight: 'bold',
-                                }}
-                            >
+                            <th {...column.getHeaderProps()} className="table-dark-header">
                                 {column.render('Header')}
                             </th>
                         ))}
@@ -172,14 +165,7 @@ const BuchungTable = () => {
                         <tr {...row.getRowProps()}>
                             {row.cells.map((cell) => {
                                 return (
-                                    <td
-                                        {...cell.getCellProps()}
-                                        style={{
-                                            padding: '10px',
-                                            border: 'solid 1px gray',
-                                            background: 'papayawhip',
-                                        }}
-                                    >
+                                    <td {...cell.getCellProps()} className="table-dark-cell">
                                         {cell.render('Cell')}
                                     </td>
                                 );

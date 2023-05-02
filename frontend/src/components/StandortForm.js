@@ -1,9 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-const StandortForm = ({ handleClose }) => {
-    const [standort, setStandort] = useState({});
+const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
+    const [standort, setStandort] = useState({
+        name: initialValues.name || '',
+        kapazitaet: initialValues.kapazitaet || '',
+        adresse: initialValues.adresse || '',
+        telefonnummer: initialValues.telefonnummer || '',
+        oeffnungszeiten: initialValues.oeffnungszeiten || '',
+    });
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -12,9 +18,12 @@ const StandortForm = ({ handleClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await axios.post('/standorte', standort);
-        handleClose();
-        window.location.reload(); // Die Seite neu laden, um die aktualisierte Liste anzuzeigen
+        try {
+            await onSubmit(standort);
+            handleClose && handleClose();
+        } catch (error) {
+            console.error('Fehler beim Speichern des Standorts:', error);
+        }
     };
 
     return (
@@ -24,7 +33,7 @@ const StandortForm = ({ handleClose }) => {
                 <Form.Control
                     type="text"
                     name="name"
-                    value={standort.name || ''}
+                    value={standort.name}
                     onChange={handleChange}
                     required
                 />
@@ -35,7 +44,7 @@ const StandortForm = ({ handleClose }) => {
                 <Form.Control
                     type="number"
                     name="kapazitaet"
-                    value={standort.kapazitaet || ''}
+                    value={standort.kapazitaet}
                     onChange={handleChange}
                     required
                 />
@@ -46,7 +55,7 @@ const StandortForm = ({ handleClose }) => {
                 <Form.Control
                     type="text"
                     name="adresse"
-                    value={standort.adresse || ''}
+                    value={standort.adresse}
                     onChange={handleChange}
                     required
                 />
@@ -57,7 +66,7 @@ const StandortForm = ({ handleClose }) => {
                 <Form.Control
                     type="text"
                     name="telefonnummer"
-                    value={standort.telefonnummer || ''}
+                    value={standort.telefonnummer}
                     onChange={handleChange}
                     required
                 />
@@ -68,13 +77,15 @@ const StandortForm = ({ handleClose }) => {
                 <Form.Control
                     type="text"
                     name="oeffnungszeiten"
-                    value={standort.oeffnungszeiten || ''}
+                    value={standort.oeffnungszeiten}
                     onChange={handleChange}
                     required
                 />
             </Form.Group>
 
-            <Button type="submit">Speichern</Button>
+            <Button variant='primary' type='submit'>
+                Standort speichern
+            </Button>
         </Form>
     );
 };

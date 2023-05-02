@@ -3,11 +3,14 @@ import { useTable } from 'react-table';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import StandortForm from "./StandortForm";
+import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
 const StandortTable = () => {
     const [data, setData] = useState([]);
-    const [editingId, setEditingId] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [selectedStandort, setselectedStandort] = useState(null);
+    const [editingModal, setEditingModal] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -25,13 +28,21 @@ const StandortTable = () => {
 
     const handleUpdate = async (id, standort) => {
         await axios.put(`/standorte/${id}`, standort);
-        setEditingId(null);
         fetchData();
     };
 
     const handleDelete = async (id) => {
         await axios.delete(`/standorte/${id}`);
         fetchData();
+    };
+
+    const handleShowEditForm = (standort) => {
+        setselectedStandort(standort);
+        setEditingModal(true);
+    };
+    const handleShowDeleteConfirm = (standort) => {
+        setselectedStandort(standort);
+        setShowDeleteConfirm(true);
     };
 
     const columns = React.useMemo(
@@ -87,29 +98,58 @@ const StandortTable = () => {
     return (
         <div>
             <h2>Standorte</h2>
-            <Button onClick={() => setShowForm(true)}>Standort hinzufügen</Button>
+            <Button variant={"dark"} className={"btn-darkmode"} onClick={() => setShowForm(true)}>Standort hinzufügen</Button>
             <Modal show={showForm} onHide={() => setShowForm(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Standort hinzufügen</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <StandortForm onSubmit={handleAdd} />
+                    <StandortForm onSubmit={handleAdd} handleClose={() => setShowForm(false)} />
                 </Modal.Body>
             </Modal>
-            <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+            <Modal show={editingModal} onHide={() => setEditingModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Standort bearbeiten</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <StandortForm
+                        onSubmit={(updatedStandort) => {
+                            handleUpdate(selectedStandort.id, updatedStandort);
+                            setEditingModal(false);
+                        }}
+                        initialValues={selectedStandort}
+                        handleClose={() => setEditingModal(false)}
+                    />
+                </Modal.Body>
+            </Modal>
+            <Modal show={showDeleteConfirm} onHide={() => setShowDeleteConfirm(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Löschen bestätigen</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Möchten Sie diesen Eintrag wirklich löschen?
+                    <div className="text-right">
+                        <Button
+                            variant="danger"
+                            onClick={() => {
+                                handleDelete(selectedStandort.id);
+                                setShowDeleteConfirm(false);
+                            }}
+                        >
+                            Löschen
+                        </Button>
+                        <Button variant="secondary" onClick={() => setShowDeleteConfirm(false)}>
+                            Abbrechen
+                        </Button>
+                    </div>
+                </Modal.Body>
+            </Modal>
+            <table className={"table-dark"} {...getTableProps()}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => (
-                            <th
-                                {...column.getHeaderProps()}
-                                style={{
-                                    borderBottom: 'solid 3px red',
-                                    background: 'aliceblue',
-                                    color: 'black',
-                                    fontWeight: 'bold',
-                                }}
-                            >
+                            <th {...column.getHeaderProps()} className="table-dark-header">
                                 {column.render('Header')}
                             </th>
                         ))}
@@ -123,33 +163,22 @@ const StandortTable = () => {
                         <tr {...row.getRowProps()}>
                             {row.cells.map((cell) => {
                                 return (
-                                    <td
-                                        {...cell.getCellProps()}
-                                        style={{
-                                            padding: '10px',
-                                            border: 'solid 1px gray',
-                                            background: 'papayawhip',
-                                        }}
-                                    >
+                                    <td {...cell.getCellProps()} className="table-dark-cell">
                                         {cell.render('Cell')}
                                     </td>
                                 );
                             })}
                             <td>
-                                {editingId === row.original.id ? (
-                                    <StandortForm
-                                        onSubmit={(updatedStandort) =>
-                                            handleUpdate(row.original.id, updatedStandort)
-                                        }
-                                        initialValues={row.original}
-                                    />
-                                ) : (
-                                    <button onClick={() => setEditingId(row.original.id)}>
-                                        Bearbeiten
-                                    </button>
-                                )}
-                                <button onClick={() => handleDelete(row.original.id)}>
-                                    Löschen
+                                <button
+                                    onClick={() => handleShowEditForm(row.original)}
+                                    style={{ background: 'none',border: 'none', color: 'blue', cursor: 'pointer' }}>
+                                    <AiOutlineEdit />
+                                </button>
+                                <button
+                                    onClick={() => handleShowDeleteConfirm(row.original)}
+                                    style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
+                                >
+                                    <AiOutlineDelete />
                                 </button>
                             </td>
                         </tr>

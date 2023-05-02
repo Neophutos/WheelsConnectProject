@@ -107,14 +107,16 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         const gesamtpreis = calculateGesamtpreis();
 
         await axios.post("/buchungen", { ...buchung, gesamtpreis });
-        handleClose();
-        window.location.reload(); // Die Seite neu laden, um die aktualisierte Liste anzuzeigen
+        try {
+            await onSubmit(buchung);
+            handleClose && handleClose();
+        } catch (error) {
+            console.error('Fehler beim Speichern der Buchung:', error);
+        }
     };
 
     return (
         <Form onSubmit={handleSubmit}>
-            {/* ...weitere Formularfelder für startdatum, enddatum, buchungsstatus... */}
-
             <Form.Group>
                 <Form.Label>Kunde</Form.Label>
                 <Form.Control

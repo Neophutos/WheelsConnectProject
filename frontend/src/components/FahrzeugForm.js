@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
-import { Form, Button } from "react-bootstrap";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
 
-const FahrzeugForm = ({ handleClose }) => {
+const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
     const [standorte, setStandorte] = useState([]);
 
     useEffect(() => {
@@ -19,22 +19,23 @@ const FahrzeugForm = ({ handleClose }) => {
     };
 
     const [fahrzeug, setFahrzeug] = useState({
-        marke: "",
-        modell: "",
-        typ: "",
-        baujahr: "",
-        farbe: "",
-        preis: "",
+        marke: initialValues.marke || '',
+        modell: initialValues.modell || '',
+        typ: initialValues.typ || '',
+        baujahr: initialValues.baujahr || '',
+        farbe: initialValues.farbe || '',
+        preis: initialValues.preis || '',
+        standort: initialValues.standort || '',
     });
 
     const fahrzeugtypen = [
-        "Limousine",
-        "Kombi",
-        "SUV",
-        "Cabrio",
-        "Coupé",
-        "Minivan",
-        "Pickup",
+        'Limousine',
+        'Kombi',
+        'SUV',
+        'Cabrio',
+        'Coupé',
+        'Minivan',
+        'Pickup',
         // Füge weitere Fahrzeugtypen hinzu
     ];
 
@@ -52,9 +53,12 @@ const FahrzeugForm = ({ handleClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await axios.post("/fahrzeuge", fahrzeug);
-        handleClose();
-        window.location.reload(); // Die Seite neu laden, um die aktualisierte Liste anzuzeigen
+        try {
+            await onSubmit(fahrzeug);
+            handleClose && handleClose();
+        } catch (error) {
+            console.error('Fehler beim Speichern des Fahrzeugs:', error);
+        }
     };
 
     return (

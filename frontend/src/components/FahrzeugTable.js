@@ -3,11 +3,14 @@ import { useTable } from 'react-table';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import FahrzeugForm from "./FahrzeugForm";
+import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
 const FahrzeugTable = () => {
     const [data, setData] = useState([]);
-    const [editingId, setEditingId] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [selectedFahrzeug, setSelectedFahrzeug] = useState(null);
+    const [editingModal, setEditingModal] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -25,13 +28,21 @@ const FahrzeugTable = () => {
 
     const handleUpdate = async (id, fahrzeug) => {
         await axios.put(`/fahrzeuge/${id}`, fahrzeug);
-        setEditingId(null);
         fetchData();
     };
 
     const handleDelete = async (id) => {
         await axios.delete(`/fahrzeuge/${id}`);
         fetchData();
+    };
+
+    const handleShowEditForm = (standort) => {
+        setSelectedFahrzeug(standort);
+        setEditingModal(true);
+    };
+    const handleShowDeleteConfirm = (standort) => {
+        setSelectedFahrzeug(standort);
+        setShowDeleteConfirm(true);
     };
 
     const columns = React.useMemo(
@@ -93,23 +104,52 @@ const FahrzeugTable = () => {
                     <Modal.Title>Fahrzeug hinzufügen</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FahrzeugForm onSubmit={handleAdd} />
+                    <FahrzeugForm onSubmit={handleAdd} handleClose={() => setShowForm(false)} />
                 </Modal.Body>
             </Modal>
-            <table variant={"dark"} className={"table-dark"} {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+            <Modal show={editingModal} onHide={() => setEditingModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Buchung bearbeiten</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FahrzeugForm
+                        onSubmit={(updatedBuchung) => {
+                            handleUpdate(selectedFahrzeug.id, updatedBuchung);
+                            setEditingModal(false);
+                        }}
+                        initialValues={selectedFahrzeug}
+                        handleClose={() => setEditingModal(false)}
+                    />
+                </Modal.Body>
+            </Modal>
+            <Modal show={showDeleteConfirm} onHide={() => setShowDeleteConfirm(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Löschen bestätigen</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Möchten Sie diesen Eintrag wirklich löschen?
+                    <div className="text-right">
+                        <Button
+                            variant="danger"
+                            onClick={() => {
+                                handleDelete(selectedFahrzeug.id);
+                                setShowDeleteConfirm(false);
+                            }}
+                        >
+                            Löschen
+                        </Button>
+                        <Button variant="secondary" onClick={() => setShowDeleteConfirm(false)}>
+                            Abbrechen
+                        </Button>
+                    </div>
+                </Modal.Body>
+            </Modal>
+            <table className={"table-dark"} {...getTableProps()}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => (
-                            <th
-                                {...column.getHeaderProps()}
-                                style={{
-                                    borderBottom: 'solid 3px red',
-                                    background: 'aliceblue',
-                                    color: 'black',
-                                    fontWeight: 'bold',
-                                }}
-                            >
+                            <th {...column.getHeaderProps()} className="table-dark-header">
                                 {column.render('Header')}
                             </th>
                         ))}
@@ -123,33 +163,22 @@ const FahrzeugTable = () => {
                         <tr {...row.getRowProps()}>
                             {row.cells.map((cell) => {
                                 return (
-                                    <td
-                                        {...cell.getCellProps()}
-                                        style={{
-                                            padding: '10px',
-                                            border: 'solid 1px gray',
-                                            background: 'papayawhip',
-                                        }}
-                                    >
+                                    <td {...cell.getCellProps()} className="table-dark-cell">
                                         {cell.render('Cell')}
                                     </td>
                                 );
                             })}
                             <td>
-                                {editingId === row.original.id ? (
-                                    <FahrzeugForm
-                                        onSubmit={(updatedFahrzeug) =>
-                                            handleUpdate(row.original.id, updatedFahrzeug)
-                                        }
-                                        initialValues={row.original}
-                                    />
-                                ) : (
-                                    <button onClick={() => setEditingId(row.original.id)}>
-                                        Bearbeiten
-                                    </button>
-                                )}
-                                <button onClick={() => handleDelete(row.original.id)}>
-                                    Löschen
+                                <button
+                                    onClick={() => handleShowEditForm(row.original)}
+                                    style={{ background: 'none',border: 'none', color: 'blue', cursor: 'pointer' }}>
+                                    <AiOutlineEdit />
+                                </button>
+                                <button
+                                    onClick={() => handleShowDeleteConfirm(row.original)}
+                                    style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
+                                >
+                                    <AiOutlineDelete />
                                 </button>
                             </td>
                         </tr>
