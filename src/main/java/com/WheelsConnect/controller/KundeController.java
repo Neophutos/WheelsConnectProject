@@ -46,7 +46,7 @@ public class KundeController {
         currentKunde.setAdresse(kunde.getAdresse());
         currentKunde.setTelefonnummer(kunde.getTelefonnummer());
         currentKunde.setEmail(kunde.getEmail());
-        currentKunde = kundeRepository.save(kunde);
+        currentKunde = kundeRepository.save(currentKunde);
 
         return ResponseEntity.ok(currentKunde);
     }

@@ -45,7 +45,7 @@ public class FahrzeugController {
         currentFahrzeug.setBaujahr(fahrzeug.getBaujahr());
         currentFahrzeug.setFarbe(fahrzeug.getFarbe());
         currentFahrzeug.setStandort(fahrzeug.getStandort());
-        currentFahrzeug = fahrzeugRepository.save(fahrzeug);
+        currentFahrzeug = fahrzeugRepository.save(currentFahrzeug);
 
         return ResponseEntity.ok(currentFahrzeug);
     }

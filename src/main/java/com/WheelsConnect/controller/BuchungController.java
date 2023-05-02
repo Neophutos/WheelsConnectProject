@@ -62,7 +62,7 @@ public class BuchungController {
         currentBuchung.setBuchungsstatus(buchung.getBuchungsstatus());
         currentBuchung.setKunde(buchung.getKunde());
         currentBuchung.setFahrzeug(buchung.getFahrzeug());
-        currentBuchung = buchungRepository.save(buchung);
+        currentBuchung = buchungRepository.save(currentBuchung);
 
         return ResponseEntity.ok(currentBuchung);
     }

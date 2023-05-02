@@ -41,7 +41,7 @@ public class StandortController {
         Standort currentStandort = standortRepository.findById(id).orElseThrow(RuntimeException::new);
         currentStandort.setName(standort.getName());
         currentStandort.setAdresse(standort.getAdresse());
-        currentStandort = standortRepository.save(standort);
+        currentStandort = standortRepository.save(currentStandort);
 
         return ResponseEntity.ok(currentStandort);
     }
