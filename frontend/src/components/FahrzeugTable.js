@@ -87,7 +87,7 @@ const FahrzeugTable = () => {
     return (
         <div>
             <h2>Fahrzeuge</h2>
-            <Button onClick={() => setShowForm(true)}>Fahrzeug hinzufügen</Button>
+            <Button variant={"dark"} className={"btn-darkmode"} onClick={() => setShowForm(true)}>Fahrzeug hinzufügen</Button>
             <Modal show={showForm} onHide={() => setShowForm(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Fahrzeug hinzufügen</Modal.Title>
@@ -96,7 +96,7 @@ const FahrzeugTable = () => {
                     <FahrzeugForm onSubmit={handleAdd} />
                 </Modal.Body>
             </Modal>
-            <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+            <table variant={"dark"} className={"table-dark"} {...getTableProps()} style={{ border: 'solid 1px blue' }}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>

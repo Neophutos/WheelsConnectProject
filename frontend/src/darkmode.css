@@ -4,53 +4,45 @@ body {
     color: #f5f5f5;
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 1rem;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+/* Tabellen */
+.table-dark {
+    color: #f5f5f5;
+    background-color: #343a40;
 }
 
-th,
-td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+.table-dark th,
+.table-dark td,
+.table-dark thead th {
+    border-color: #454d55;
 }
 
-th {
-    vertical-align: bottom;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+.table-dark.table-bordered {
+    border: 0;
 }
 
-.form-label,
-.form-select,
-.form-control {
+.table-dark.table-bordered th,
+.table-dark.table-bordered td {
+    border: 1px solid #454d55;
+}
+
+.table-dark.table-hover tbody tr:hover {
+    color: #f5f5f5;
+    background-color: rgba(255, 255, 255, 0.075);
+}
+
+/* Buttons */
+.btn-darkmode {
     color: #f5f5f5;
     background-color: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.15);
 }
 
-.form-select:focus,
-.form-control:focus {
-    border-color: rgba(255, 255, 255, 0.25);
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
-}
-
-button {
-    color: #f5f5f5;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.15);
-}
-
-button:hover {
+.btn-darkmode:hover {
     background-color: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.25);
 }
 
-button:focus {
+.btn-darkmode:focus {
     box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
 }
 
