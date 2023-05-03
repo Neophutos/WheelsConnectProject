@@ -2,8 +2,6 @@ package com.WheelsConnect.controller;
 
 import com.WheelsConnect.model.Kunde;
 import com.WheelsConnect.repository.KundeRepository;
-import com.WheelsConnect.service.KundeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
