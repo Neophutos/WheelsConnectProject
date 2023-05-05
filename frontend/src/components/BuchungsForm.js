@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Toast, ToastContainer } from 'react-bootstrap';
 import axios from 'axios';
 
 const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
@@ -12,16 +12,23 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
     }, []);
 
     useEffect(() => {
-        if (initialValues) {
+        if (initialValues && Object.keys(initialValues).length > 0) {
             setBuchung({
-                startdatum: initialValues.startdatum || "",
-                enddatum: initialValues.enddatum || "",
+                startdatum: initialValues.startdatum || getTodayDateString(),
+                enddatum: initialValues.enddatum || getTodayDateString(),
                 buchungsstatus: initialValues.buchungsstatus || "Reserviert",
                 kunde: initialValues.kunde || null,
                 fahrzeug: initialValues.fahrzeug || null,
             });
         }
     }, [initialValues]);
+
+    const [toast, setToast] = useState({ show: false, message: '' });
+
+    const showToast = (message) => {
+        setToast({ show: true, message });
+        setTimeout(() => setToast({ show: false, message: '' }), 5000);
+    };
 
 
     const fetchKunden = async () => {
@@ -77,6 +84,15 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         setBuchung({ ...buchung, fahrzeug: selectedFahrzeug });
     };
 
+    const getTodayDateString = () => {
+        const today = new Date();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const year = today.getFullYear();
+
+        return `${year}-${month}-${day}`;
+    };
+
     const calculateGesamtpreis = () => {
         if (!buchung.startdatum || !buchung.enddatum || !buchung.fahrzeug) {
             return 0;
@@ -92,6 +108,17 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!buchung.fahrzeug || !buchung.kunde) {
+            showToast('Bitte wählen Sie einen Kunden und ein Fahrzeug aus.');
+            return;
+        }
+
+        // Überprüfen, ob das Enddatum vor dem Startdatum liegt
+        if (new Date(buchung.enddatum) < new Date(buchung.startdatum)) {
+            showToast('Das Enddatum darf nicht vor dem Startdatum liegen. Bitte korrigieren Sie das Datum.');
+            return;
+        }
+
         // Verfügbarkeit des Fahrzeugs prüfen
         const availabilityResponse = await axios.post("/buchungen/check-availability", {
             fahrzeugId: buchung.fahrzeug.id,
@@ -101,22 +128,27 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
 
         const isAvailable = availabilityResponse.data.available;
         if (!isAvailable) {
-            alert("Das gewählte Fahrzeug ist im angegebenen Zeitraum nicht verfügbar. Bitte wählen Sie ein anderes Fahrzeug oder ändern Sie das Datum.");
+            showToast("Das gewählte Fahrzeug ist im angegebenen Zeitraum nicht verfügbar. Bitte wählen Sie ein anderes Fahrzeug oder ändern Sie das Datum.");
             return;
         }
 
         const gesamtpreis = calculateGesamtpreis();
 
-        await axios.post("/buchungen", { ...buchung, gesamtpreis });
+        const response = await axios.post("/buchungen", { ...buchung, gesamtpreis });
+        const createdBuchung = response.data;
+
         try {
-            await onSubmit(buchung);
+            await onSubmit(createdBuchung);
             handleClose && handleClose();
         } catch (error) {
             console.error('Fehler beim Speichern der Buchung:', error);
         }
     };
 
+
+
     return (
+        <>
         <Form onSubmit={handleSubmit}>
             <Form.Group>
                 <Form.Label>Kunde</Form.Label>
@@ -158,7 +190,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                 <Form.Control
                     type='date'
                     name='startdatum'
-                    value={buchung.startdatum}
+                    defaultValue={buchung.startdatum}
                     onChange={handleChange}
                     required
                 />
@@ -169,7 +201,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                 <Form.Control
                     type='date'
                     name='enddatum'
-                    value={buchung.enddatum}
+                    defaultValue={buchung.enddatum}
                     onChange={handleChange}
                     required
                 />
@@ -197,6 +229,15 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                 Buchung speichern
             </Button>
         </Form>
+        <ToastContainer position="bottom-center">
+            <Toast show={toast.show} onClose={() => setToast({ show: false, message: '' })} delay={5000} autohide>
+                <Toast.Header>
+                    <strong className="me-auto">Fehler</strong>
+                </Toast.Header>
+                <Toast.Body>{toast.message}</Toast.Body>
+            </Toast>
+        </ToastContainer>
+    </>
     );
 };
 
