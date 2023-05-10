@@ -45,6 +45,23 @@ const FahrzeugTable = () => {
         setShowDeleteConfirm(true);
     };
 
+    const renderDetails = (row) => (
+        <Accordion>
+            <Card>
+                <Accordion.Toggle as={Card.Header} eventKey="0">
+                    Details
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0">
+                    <Card.Body>
+                        <p><strong>Typ:</strong> {row.original.typ}</p>
+                        <p><strong>Baujahr:</strong> {row.original.baujahr}</p>
+                        <p><strong>Farbe:</strong> {row.original.farbe}</p>
+                    </Card.Body>
+                </Accordion.Collapse>
+            </Card>
+        </Accordion>
+    );
+
     const columns = React.useMemo(
         () => [
             {
@@ -70,10 +87,6 @@ const FahrzeugTable = () => {
             {
                 Header: 'Farbe',
                 accessor: 'farbe',
-            },
-            {
-                Header: 'Verfügbarkeit',
-                accessor: 'verfuegbarkeit',
             },
             {
                 Header: 'Preis',
@@ -160,28 +173,35 @@ const FahrzeugTable = () => {
                 {rows.map((row) => {
                     prepareRow(row);
                     return (
-                        <tr {...row.getRowProps()}>
-                            {row.cells.map((cell) => {
-                                return (
-                                    <td {...cell.getCellProps()} className="table-dark-cell">
-                                        {cell.render('Cell')}
-                                    </td>
-                                );
-                            })}
-                            <td>
-                                <button
-                                    onClick={() => handleShowEditForm(row.original)}
-                                    style={{ background: 'none',border: 'none', color: 'blue', cursor: 'pointer' }}>
-                                    <AiOutlineEdit />
-                                </button>
-                                <button
-                                    onClick={() => handleShowDeleteConfirm(row.original)}
-                                    style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
-                                >
-                                    <AiOutlineDelete />
-                                </button>
-                            </td>
-                        </tr>
+                        <>
+                            <tr {...row.getRowProps()}>
+                                {row.cells.map((cell) => {
+                                    return (
+                                        <td {...cell.getCellProps()} className="table-dark-cell">
+                                            {cell.render('Cell')}
+                                        </td>
+                                    );
+                                })}
+                                <td>
+                                    <button
+                                        onClick={() => handleShowEditForm(row.original)}
+                                        style={{ background: 'none',border: 'none', color: 'blue', cursor: 'pointer' }}>
+                                        <AiOutlineEdit />
+                                    </button>
+                                    <button
+                                        onClick={() => handleShowDeleteConfirm(row.original)}
+                                        style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
+                                    >
+                                        <AiOutlineDelete />
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colSpan={columns.length + 1}>
+                                    {renderDetails(row)}
+                                </td>
+                            </tr>
+                        </>
                     );
                 })}
                 </tbody>

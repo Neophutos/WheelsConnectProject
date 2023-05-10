@@ -42,6 +42,9 @@ public class KundeController {
         currentKunde.setNachname(kunde.getNachname());
         currentKunde.setGeburtsdatum(kunde.getGeburtsdatum());
         currentKunde.setAdresse(kunde.getAdresse());
+        currentKunde.setStadt(kunde.getStadt());
+        currentKunde.setPlz(kunde.getPlz());
+        currentKunde.setLand(kunde.getLand());
         currentKunde.setTelefonnummer(kunde.getTelefonnummer());
         currentKunde.setEmail(kunde.getEmail());
         currentKunde = kundeRepository.save(currentKunde);

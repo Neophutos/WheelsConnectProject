@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import axios from 'axios';
 
 const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
     const [standort, setStandort] = useState({
         name: initialValues.name || '',
         kapazitaet: initialValues.kapazitaet || '',
         adresse: initialValues.adresse || '',
+        stadt: initialValues.stadt || '',
+        plz: initialValues.plz || '',
+        land: initialValues.land || '',
         telefonnummer: initialValues.telefonnummer || '',
         oeffnungszeiten: initialValues.oeffnungszeiten || '',
     });
+
+    useEffect(() => {
+        setStandort({
+            name: initialValues.name || '',
+            kapazitaet: initialValues.kapazitaet || '',
+            adresse: initialValues.adresse || '',
+            stadt: initialValues.stadt || '',
+            plz: initialValues.plz || '',
+            land: initialValues.land || '',
+            telefonnummer: initialValues.telefonnummer || '',
+            oeffnungszeiten: initialValues.oeffnungszeiten || '',
+        });
+    }, [initialValues]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -51,11 +66,44 @@ const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
             </Form.Group>
 
             <Form.Group>
-                <Form.Label>Adresse</Form.Label>
+                <Form.Label>Straße und Hausnummer</Form.Label>
                 <Form.Control
                     type="text"
                     name="adresse"
                     value={standort.adresse}
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+
+            <Form.Group>
+                <Form.Label>Stadt</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="stadt"
+                    value={standort.stadt}
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+
+            <Form.Group>
+                <Form.Label>Postleitzahl</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="plz"
+                    value={standort.plz}
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+
+            <Form.Group>
+                <Form.Label>Land</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="land"
+                    value={standort.land}
                     onChange={handleChange}
                     required
                 />

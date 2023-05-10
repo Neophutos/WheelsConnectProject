@@ -1,9 +1,6 @@
 To-Do's im Frontend-Bereich:
-- Formulare schließen nach erfolgreicher Erstellung nicht
-- Bearbeitungsfenster werden nicht mit vorhandenen Daten gefüllt
-- Bearbeitungsfenster sollte auch als Pop-Up (Modal) fungieren
+- Bearbeitung von Standorten funktioniert nicht
+- Bearbeitung im Buchungsfenster funktioniert nicht, da Fehlermeldung durch Start- und Enddatumsüberprüfung
 - Dashboard ist relativ leer
-- Tabellen sind schlecht leserlich und noch nicht im Darkmode-Format
 - Font muss geändert werden
 - Authentifizierungsmaßnahmen fehlen
-- Buchung muss ergänzt werden und ein entsprechendes Formular muss angelegt werden

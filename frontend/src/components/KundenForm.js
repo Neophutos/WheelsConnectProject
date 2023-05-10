@@ -8,6 +8,9 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         nachname: initialValues.nachname || '',
         geburtsdatum: initialValues.geburtsdatum || '',
         adresse: initialValues.adresse || '',
+        stadt: initialValues.stadt || '',
+        plz: initialValues.plz || '',
+        land: initialValues.land || '',
         telefonnummer: initialValues.telefonnummer || '',
         email: initialValues.email || '',
     });
@@ -60,7 +63,7 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                 />
             </Form.Group>
             <Form.Group>
-                <Form.Label>Adresse</Form.Label>
+                <Form.Label>Straße und Hausnummer</Form.Label>
                 <Form.Control
                     type="text"
                     name="adresse"
@@ -69,6 +72,40 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                     required
                 />
             </Form.Group>
+
+            <Form.Group>
+                <Form.Label>Stadt</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="stadt"
+                    value={kunde.stadt}
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+
+            <Form.Group>
+                <Form.Label>Postleitzahl</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="plz"
+                    value={kunde.plz}
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+
+            <Form.Group>
+                <Form.Label>Land</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="land"
+                    value={kunde.land}
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+
             <Form.Group>
                 <Form.Label>Telefonnummer</Form.Label>
                 <Form.Control
