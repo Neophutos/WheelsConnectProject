@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
-import { Modal, Button } from 'react-bootstrap';
+import {Modal, Button} from 'react-bootstrap';
 import FahrzeugForm from "./FahrzeugForm";
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
@@ -44,23 +44,6 @@ const FahrzeugTable = () => {
         setSelectedFahrzeug(standort);
         setShowDeleteConfirm(true);
     };
-
-    const renderDetails = (row) => (
-        <Accordion>
-            <Card>
-                <Accordion.Toggle as={Card.Header} eventKey="0">
-                    Details
-                </Accordion.Toggle>
-                <Accordion.Collapse eventKey="0">
-                    <Card.Body>
-                        <p><strong>Typ:</strong> {row.original.typ}</p>
-                        <p><strong>Baujahr:</strong> {row.original.baujahr}</p>
-                        <p><strong>Farbe:</strong> {row.original.farbe}</p>
-                    </Card.Body>
-                </Accordion.Collapse>
-            </Card>
-        </Accordion>
-    );
 
     const columns = React.useMemo(
         () => [
@@ -173,7 +156,6 @@ const FahrzeugTable = () => {
                 {rows.map((row) => {
                     prepareRow(row);
                     return (
-                        <>
                             <tr {...row.getRowProps()}>
                                 {row.cells.map((cell) => {
                                     return (
@@ -196,12 +178,6 @@ const FahrzeugTable = () => {
                                     </button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td colSpan={columns.length + 1}>
-                                    {renderDetails(row)}
-                                </td>
-                            </tr>
-                        </>
                     );
                 })}
                 </tbody>
