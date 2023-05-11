@@ -132,6 +132,7 @@ const BuchungTable = () => {
                         }}
                         initialValues={selectedBuchung}
                         handleClose={() => setEditingModal(false)}
+                        isEditing={true}
                     />
                 </Modal.Body>
             </Modal>

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Toast, ToastContainer } from 'react-bootstrap';
+import { Form, Button} from 'react-bootstrap';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
+
+const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = false }) => {
     const [kunden, setKunden] = useState([]);
     const [fahrzeuge, setFahrzeuge] = useState([]);
 
@@ -23,13 +26,9 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         }
     }, [initialValues]);
 
-    const [toast, setToast] = useState({ show: false, message: '' });
-
     const showToast = (message) => {
-        setToast({ show: true, message });
-        setTimeout(() => setToast({ show: false, message: '' }), 5000);
+        toast.error(message, { autoClose: 5000, position: toast.POSITION.BOTTOM_RIGHT });
     };
-
 
     const fetchKunden = async () => {
         try {
@@ -119,26 +118,28 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
             return;
         }
 
-        // Verfügbarkeit des Fahrzeugs prüfen
-        const availabilityResponse = await axios.post("/buchungen/check-availability", {
-            fahrzeugId: buchung.fahrzeug.id,
-            startdatum: buchung.startdatum,
-            enddatum: buchung.enddatum,
-        });
+        if (!isEditing) {
+            // Verfügbarkeit des Fahrzeugs prüfen
+            const availabilityResponse = await axios.post("/buchungen/check-availability", {
+                fahrzeugId: buchung.fahrzeug.id,
+                startdatum: buchung.startdatum,
+                enddatum: buchung.enddatum,
+            });
 
-        const isAvailable = availabilityResponse.data.available;
-        if (!isAvailable) {
-            showToast("Das gewählte Fahrzeug ist im angegebenen Zeitraum nicht verfügbar. Bitte wählen Sie ein anderes Fahrzeug oder ändern Sie das Datum.");
-            return;
+            const isAvailable = availabilityResponse.data.available;
+            if (!isAvailable) {
+                showToast("Das gewählte Fahrzeug ist im angegebenen Zeitraum nicht verfügbar. Bitte wählen Sie ein anderes Fahrzeug oder ändern Sie das Datum.");
+                return;
+            }
         }
 
         const gesamtpreis = calculateGesamtpreis();
 
-        const response = await axios.post("/buchungen", { ...buchung, gesamtpreis });
-        const createdBuchung = response.data;
+        // Aktualisierte Buchungsdaten erstellen und das Enddatum korrekt überschreiben
+        const updatedBuchung = { ...buchung, gesamtpreis, enddatum: buchung.enddatum };
 
         try {
-            await onSubmit(createdBuchung);
+            await onSubmit(updatedBuchung);
             handleClose && handleClose();
         } catch (error) {
             console.error('Fehler beim Speichern der Buchung:', error);
@@ -229,14 +230,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                 Buchung speichern
             </Button>
         </Form>
-        <ToastContainer position="bottom-center">
-            <Toast show={toast.show} onClose={() => setToast({ show: false, message: '' })} delay={5000} autohide>
-                <Toast.Header>
-                    <strong className="me-auto">Fehler</strong>
-                </Toast.Header>
-                <Toast.Body>{toast.message}</Toast.Body>
-            </Toast>
-        </ToastContainer>
+        <ToastContainer />
     </>
     );
 };
