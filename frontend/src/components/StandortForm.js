@@ -14,16 +14,18 @@ const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
     });
 
     useEffect(() => {
-        setStandort({
-            name: initialValues.name || '',
-            kapazitaet: initialValues.kapazitaet || '',
-            adresse: initialValues.adresse || '',
-            stadt: initialValues.stadt || '',
-            plz: initialValues.plz || '',
-            land: initialValues.land || '',
-            telefonnummer: initialValues.telefonnummer || '',
-            oeffnungszeiten: initialValues.oeffnungszeiten || '',
-        });
+        if (initialValues && Object.keys(initialValues).length > 0) {
+            setStandort({
+                name: initialValues.name || '',
+                kapazitaet: initialValues.kapazitaet || '',
+                adresse: initialValues.adresse || '',
+                stadt: initialValues.stadt || '',
+                plz: initialValues.plz || '',
+                land: initialValues.land || '',
+                telefonnummer: initialValues.telefonnummer || '',
+                oeffnungszeiten: initialValues.oeffnungszeiten || '',
+            });
+        }
     }, [initialValues]);
 
     const handleChange = (event) => {

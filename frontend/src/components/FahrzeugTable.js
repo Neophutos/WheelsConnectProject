@@ -36,12 +36,12 @@ const FahrzeugTable = () => {
         fetchData();
     };
 
-    const handleShowEditForm = (standort) => {
-        setSelectedFahrzeug(standort);
+    const handleShowEditForm = (fahrzeug) => {
+        setSelectedFahrzeug(fahrzeug);
         setEditingModal(true);
     };
-    const handleShowDeleteConfirm = (standort) => {
-        setSelectedFahrzeug(standort);
+    const handleShowDeleteConfirm = (fahrzeug) => {
+        setSelectedFahrzeug(fahrzeug);
         setShowDeleteConfirm(true);
     };
 
