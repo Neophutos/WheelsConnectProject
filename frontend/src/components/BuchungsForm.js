@@ -97,8 +97,12 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
             return 0;
         }
 
-        const start = new Date(buchung.startdatum);
-        const end = new Date(buchung.enddatum);
+        const startDatumObj = new Date(buchung.startdatum);
+        const endDatumObj = new Date(buchung.enddatum);
+
+        const start = new Date(Date.UTC(startDatumObj.getFullYear(), startDatumObj.getMonth(), startDatumObj.getDate()));
+        const end = new Date(Date.UTC(endDatumObj.getFullYear(), endDatumObj.getMonth(), endDatumObj.getDate()));
+
         const days = (end - start) / (1000 * 60 * 60 * 24) + 1;
 
         return days * buchung.fahrzeug.preis;
@@ -158,6 +162,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
                     name='kunde'
                     value={buchung.kunde?.id}
                     onChange={handleKundeChange}
+                    disabled={isEditing}
                     required
                 >
                     <option value=''>Kunde auswählen</option>
@@ -175,6 +180,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
                     name='fahrzeug'
                     value={buchung.fahrzeug?.id}
                     onChange={handleFahrzeugChange}
+                    disabled={isEditing}
                     required
                 >
                     <option value=''>Fahrzeug auswählen</option>

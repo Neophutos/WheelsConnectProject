@@ -3,10 +3,19 @@ import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
+    const getTodayDateString = () => {
+        const today = new Date();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const year = today.getFullYear();
+
+        return `${year}-${month}-${day}`;
+    };
+
     const [kunde, setKunde] = useState({
         vorname: initialValues.vorname || '',
         nachname: initialValues.nachname || '',
-        geburtsdatum: initialValues.geburtsdatum || '',
+        geburtsdatum: initialValues.geburtsdatum || getTodayDateString(),
         adresse: initialValues.adresse || '',
         stadt: initialValues.stadt || '',
         plz: initialValues.plz || '',
@@ -19,6 +28,8 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         const { name, value } = event.target;
         setKunde({ ...kunde, [name]: value });
     };
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -57,7 +68,7 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                 <Form.Control
                     type="date"
                     name="geburtsdatum"
-                    value={kunde.geburtsdatum}
+                    defaultValue={kunde.geburtsdatum}
                     onChange={handleChange}
                     required
                 />
