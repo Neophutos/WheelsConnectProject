@@ -126,7 +126,9 @@ const Dashboard = () => {
             </div>
             <div style={{padding: 10}}>
                 <h4><b>Die am häufigsten gebuchten Fahrzeuge</b></h4>
+                <div style={{ maxWidth: "500px", margin: "auto"}}>
                 <Bar data={barData} />
+                </div>
             </div>
         </div>
     );
