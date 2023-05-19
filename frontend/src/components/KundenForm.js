@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
-import axios from 'axios';
+import {toast, ToastContainer} from "react-toastify";
 
 const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
+
     const getTodayDateString = () => {
         const today = new Date();
         const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -12,36 +13,58 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         return `${year}-${month}-${day}`;
     };
 
-    const [kunde, setKunde] = useState({
-        vorname: initialValues.vorname || '',
-        nachname: initialValues.nachname || '',
-        geburtsdatum: initialValues.geburtsdatum || getTodayDateString(),
-        adresse: initialValues.adresse || '',
-        stadt: initialValues.stadt || '',
-        plz: initialValues.plz || '',
-        land: initialValues.land || '',
-        telefonnummer: initialValues.telefonnummer || '',
-        email: initialValues.email || '',
-    });
+    useEffect(() => {
+        if (initialValues && Object.keys(initialValues).length > 0) {
+            setKunde({
+                vorname: initialValues.vorname || '',
+                nachname: initialValues.nachname || '',
+                geburtsdatum: initialValues.geburtsdatum || getTodayDateString(),
+                adresse: initialValues.adresse || '',
+                stadt: initialValues.stadt || '',
+                plz: initialValues.plz || '',
+                land: initialValues.land || '',
+                telefonnummer: initialValues.telefonnummer || '',
+                email: initialValues.email || '',
+            });
+        }
+    }, [initialValues]);
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setKunde({ ...kunde, [name]: value });
+    const showToast = (message) => {
+        toast.error(message, { autoClose: 5000, position: toast.POSITION.BOTTOM_RIGHT });
     };
 
+    const [kunde, setKunde] = useState({
+        vorname: '',
+        nachname: '',
+        geburtsdatum: '',
+        adresse: '',
+        stadt: '',
+        plz: '',
+        land: '',
+        telefonnummer: '',
+        email: '',
+    });
 
+    const handleChange = (e) => {
+        setKunde({ ...kunde, [e.target.name]: e.target.value });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Aktualisierte Kundendaten erstellen und das Enddatum korrekt überschreiben
+        const updatedKunde = { ...kunde, geburtsdatum: kunde.geburtsdatum};
+
         try {
-            await onSubmit(kunde);
+            await onSubmit(updatedKunde);
             handleClose && handleClose();
         } catch (error) {
-            console.error('Fehler beim Speichern des Kunden:', error);
+            showToast('Ein Fehler ist beim Speichern des Kunden aufgetreten');
         }
     };
 
     return (
+        <>
         <Form onSubmit={handleSubmit}>
             <Form.Group>
                 <Form.Label>Vorname</Form.Label>
@@ -142,6 +165,8 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                 Kunde speichern
             </Button>
         </Form>
+        <ToastContainer/>
+        </>
     );
 };
 

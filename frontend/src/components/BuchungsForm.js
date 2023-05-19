@@ -146,7 +146,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
             await onSubmit(updatedBuchung);
             handleClose && handleClose();
         } catch (error) {
-            console.error('Fehler beim Speichern der Buchung:', error);
+            showToast('Ein Fehler ist beim Speichern der Buchung aufgetreten.');
         }
     };
 

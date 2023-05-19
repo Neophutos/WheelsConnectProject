@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import {toast, ToastContainer} from "react-toastify";
 
 const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
     const [standorte, setStandorte] = useState([]);
@@ -9,12 +10,16 @@ const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         fetchStandorte();
     }, []);
 
+    const showToast = (message) => {
+        toast.error(message, { autoClose: 5000, position: toast.POSITION.BOTTOM_RIGHT });
+    };
+
     const fetchStandorte = async () => {
         try {
             const response = await axios.get('/standorte');
             setStandorte(response.data);
         } catch (error) {
-            console.error('Fehler beim Abrufen der Standorte:', error);
+            showToast('Ein Fehler ist beim Abrufen der Standorte aufgetreten');
         }
     };
 
@@ -57,11 +62,12 @@ const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
             await onSubmit(fahrzeug);
             handleClose && handleClose();
         } catch (error) {
-            console.error('Fehler beim Speichern des Fahrzeugs:', error);
+            showToast('Ein Fehler ist beim Speichern des Fahrzeugs aufgetreten');
         }
     };
 
     return (
+        <>
         <Form onSubmit={handleSubmit}>
             <Form.Group>
                 <Form.Label>Marke</Form.Label>
@@ -171,6 +177,8 @@ const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                 Fahrzeug speichern
             </Button>
         </Form>
+    <ToastContainer />
+</>
     );
 };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import {toast, ToastContainer} from "react-toastify";
 
 const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
     const [standort, setStandort] = useState({
@@ -12,6 +13,11 @@ const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         telefonnummer: initialValues.telefonnummer || '',
         oeffnungszeiten: initialValues.oeffnungszeiten || '',
     });
+
+    const showToast = (message) => {
+        toast.error(message, { autoClose: 5000, position: toast.POSITION.BOTTOM_RIGHT });
+    };
+
 
     useEffect(() => {
         if (initialValues && Object.keys(initialValues).length > 0) {
@@ -39,11 +45,12 @@ const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
             await onSubmit(standort);
             handleClose && handleClose();
         } catch (error) {
-            console.error('Fehler beim Speichern des Standorts:', error);
+            showToast('Ein Fehler ist beim Speichern des Standorts aufgetreten.');
         }
     };
 
     return (
+        <>
         <Form onSubmit={handleSubmit}>
             <Form.Group>
                 <Form.Label>Name</Form.Label>
@@ -137,6 +144,8 @@ const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
                 Standort speichern
             </Button>
         </Form>
+    <ToastContainer />
+</>
     );
 };
 
