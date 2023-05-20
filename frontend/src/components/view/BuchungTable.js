@@ -1,26 +1,33 @@
+// Importieren der notwendigen Pakete und Komponenten
 import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import BuchungsForm from '../form/BuchungsForm';
-import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'; // Importieren Sie die Icons
+import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
+// Die BuchungTable-Komponente, die die Tabelle für Buchungen anzeigt.
 const BuchungTable = () => {
+
+    // Verwendet den useState-Hook von React, um den Zustand der Komponente zu verwalten.
     const [data, setData] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [selectedBuchung, setSelectedBuchung] = useState(null);
     const [editingModal, setEditingModal] = useState(false);
 
+    // Verwendet den useEffect-Hook, um Daten zu holen, wenn die Komponente gemountet wird.
     useEffect(() => {
         fetchData();
     }, []);
 
+    // Methode, um Daten von der Server-API zu holen.
     const fetchData = async () => {
         const response = await axios.get('/buchungen');
         setData(response.data);
     };
 
+    // Methoden zum Hinzufügen, Aktualisieren und Löschen von Buchungen über die API.
     const handleAdd = async (buchung) => {
         await axios.post('/buchungen', buchung);
         fetchData();
@@ -36,6 +43,7 @@ const BuchungTable = () => {
         fetchData();
     };
 
+    // Methoden, um das Bearbeitungsformular und das Bestätigungsfenster zum Löschen anzuzeigen.
     const handleShowEditForm = (buchung) => {
         setSelectedBuchung(buchung);
         setEditingModal(true);
@@ -45,6 +53,7 @@ const BuchungTable = () => {
         setShowDeleteConfirm(true);
     };
 
+    // Funktion zum Formatieren eines Datumsstrings in das Format "dd.mm.yyyy"..
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -54,6 +63,7 @@ const BuchungTable = () => {
         return `${day}.${month}.${year}`;
     };
 
+    // Definiert die Spalten für die Tabelle.
     const columns = React.useMemo(
         () => [
             {
@@ -100,6 +110,7 @@ const BuchungTable = () => {
         []
     );
 
+    // Verwendet den useTable-Hook, um die Tabellenlogik zu verwalten.
     const {
         getTableProps,
         getTableBodyProps,

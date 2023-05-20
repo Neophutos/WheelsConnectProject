@@ -1,16 +1,23 @@
+// Importieren der notwendigen Pakete und Komponenten
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Bar, Doughnut} from 'react-chartjs-2';
 import { Chart, DoughnutController, BarController, BarElement, ArcElement, LinearScale, CategoryScale, Tooltip } from 'chart.js';
 
+// Registriert die benötigten Module bei chart.js.
 Chart.register(DoughnutController, BarController, BarElement, ArcElement, LinearScale, CategoryScale, Tooltip);
 
+// Die Dashboard-Komponente, die verschiedene Diagramme und Metriken anzeigt.
 const Dashboard = () => {
+
+    // Verwendet den useState-Hook von React, um den Zustand der Komponente zu verwalten.
     const [kundenAnzahl, setKundenAnzahl] = useState(0);
     const [buchungen, setBuchungen] = useState([]);
     const [fahrzeuge, setFahrzeuge] = useState([]);
 
+    // Verwendet den useEffect-Hook, um Daten zu holen, wenn die Komponente gemountet wird.
     useEffect(() => {
+        // Funktion, um Daten von der Server-API zu holen.
         const fetchData = async () => {
             const responseKunden = await axios.get('/kunden');
             setKundenAnzahl(responseKunden.data.length);
@@ -45,6 +52,7 @@ const Dashboard = () => {
         return acc;
     }, []);
 
+    // Logik für das Erstellen und Rendern der Diagramme.
     const createDoughnutCharts = (standorte) => {
         return standorte.map((standort, index) => {
             const { count, kapazitaet } = standort;

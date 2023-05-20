@@ -1,4 +1,4 @@
-// KundenTable.js
+// Importieren der notwendigen Pakete und Komponenten
 import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
@@ -6,22 +6,28 @@ import { Modal, Button } from 'react-bootstrap';
 import KundenForm from "../form/KundenForm";
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
+// Die KundenTable-Komponente zeigt die Tabelle für Kunden an.
 const KundenTable = () => {
+
+    // Verwendet den useState-Hook von React, um den Zustand der Komponente zu verwalten.
     const [data, setData] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [selectedKunde, setSelectedKunde] = useState(null);
     const [editingModal, setEditingModal] = useState(false);
 
+    // Verwendet den useEffect-Hook, um Daten zu holen, wenn die Komponente gemountet wird.
     useEffect(() => {
         fetchData();
     }, []);
 
+    // Funktion, um Daten von der Server-API zu holen.
     const fetchData = async () => {
         const response = await axios.get('/kunden');
         setData(response.data);
     };
 
+    // Methoden zum Hinzufügen, Aktualisieren und Löschen von Kunden über die API.
     const handleAdd = async (kunde) => {
         await axios.post('/kunden', kunde);
         fetchData();
@@ -37,6 +43,7 @@ const KundenTable = () => {
         fetchData();
     };
 
+    // Methoden zum Anzeigen des Bearbeitungsformulars und der Löschbestätigung.
     const handleShowEditForm = (kunde) => {
         setSelectedKunde(kunde);
         setEditingModal(true);
@@ -46,6 +53,7 @@ const KundenTable = () => {
         setShowDeleteConfirm(true);
     };
 
+    // Funktion zum Formatieren eines Datumsstrings in das Format "dd.mm.yyyy".
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -55,6 +63,7 @@ const KundenTable = () => {
         return `${day}.${month}.${year}`;
     };
 
+    // Logik für die Erstellung und Darstellung der Tabelle.
     const columns = React.useMemo(
         () => [
             {
@@ -102,6 +111,7 @@ const KundenTable = () => {
         []
     );
 
+    // Verwendet den useTable-Hook, um die Tabellenlogik zu verwalten.
     const {
         getTableProps,
         getTableBodyProps,

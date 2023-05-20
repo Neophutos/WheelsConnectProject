@@ -1,3 +1,4 @@
+// Importieren der notwendigen Pakete und Komponenten
 import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
@@ -5,22 +6,28 @@ import {Modal, Button} from 'react-bootstrap';
 import FahrzeugForm from "../form/FahrzeugForm";
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
+// Die FahrzeugTable-Komponente, die die Tabelle für Fahrzeuge anzeigt.
 const FahrzeugTable = () => {
+
+    // Verwendet den useState-Hook von React, um den Zustand der Komponente zu verwalten.
     const [data, setData] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [selectedFahrzeug, setSelectedFahrzeug] = useState(null);
     const [editingModal, setEditingModal] = useState(false);
 
+    // Verwendet den useEffect-Hook, um Daten zu holen, wenn die Komponente gemountet wird.
     useEffect(() => {
         fetchData();
     }, []);
 
+    // Funktion, um Daten von der Server-API zu holen.
     const fetchData = async () => {
         const response = await axios.get('/fahrzeuge');
         setData(response.data);
     };
 
+    // Methoden zum Hinzufügen, Aktualisieren und Löschen von Fahrzeugen über die API.
     const handleAdd = async (fahrzeug) => {
         await axios.post('/fahrzeuge', fahrzeug);
         fetchData();
@@ -36,6 +43,7 @@ const FahrzeugTable = () => {
         fetchData();
     };
 
+    // Methoden zum Anzeigen des Bearbeitungsformulars und der Löschbestätigung.
     const handleShowEditForm = (fahrzeug) => {
         setSelectedFahrzeug(fahrzeug);
         setEditingModal(true);
@@ -45,6 +53,7 @@ const FahrzeugTable = () => {
         setShowDeleteConfirm(true);
     };
 
+    // Logik für die Erstellung und Darstellung der Tabelle.
     const columns = React.useMemo(
         () => [
             {
@@ -83,6 +92,7 @@ const FahrzeugTable = () => {
         []
     );
 
+    // Verwendet den useTable-Hook, um die Tabellenlogik zu verwalten.
     const {
         getTableProps,
         getTableBodyProps,

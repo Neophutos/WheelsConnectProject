@@ -1,3 +1,4 @@
+// Importieren der notwendigen Pakete und Komponenten
 import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
@@ -5,22 +6,28 @@ import { Modal, Button } from 'react-bootstrap';
 import StandortForm from "../form/StandortForm";
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
+// Die StandortTable-Komponente zeigt die Tabelle für Standorte an.
 const StandortTable = () => {
+
+    // Verwendet den useState-Hook von React, um den Zustand der Komponente zu verwalten.
     const [data, setData] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [selectedStandort, setselectedStandort] = useState(null);
     const [editingModal, setEditingModal] = useState(false);
 
+    // Verwendet den useEffect-Hook, um Daten zu holen, wenn die Komponente gemountet wird.
     useEffect(() => {
         fetchData();
     }, []);
 
+    // Funktion, um Daten von der Server-API zu holen.
     const fetchData = async () => {
         const response = await axios.get('/standorte');
         setData(response.data);
     };
 
+    // Methoden zum Hinzufügen, Aktualisieren und Löschen von Kunden über die API.
     const handleAdd = async (standort) => {
         await axios.post('/standorte', standort);
         fetchData();
@@ -36,6 +43,7 @@ const StandortTable = () => {
         fetchData();
     };
 
+    // Methoden zum Anzeigen des Bearbeitungsformulars und der Löschbestätigung.
     const handleShowEditForm = (standort) => {
         setselectedStandort(standort);
         setEditingModal(true);
@@ -45,6 +53,7 @@ const StandortTable = () => {
         setShowDeleteConfirm(true);
     };
 
+    // Logik für die Erstellung und Darstellung der Tabelle.
     const columns = React.useMemo(
         () => [
             {
