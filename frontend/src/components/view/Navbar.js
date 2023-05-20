@@ -1,13 +1,17 @@
-// Importieren der notwendigen Pakete und Komponenten
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+// Weitere benötigte Importe hinzufügen
+import { useContext } from 'react';
+import { AuthContext } from '../security/AuthProvider';
+import {NavLink} from "react-router-dom";
 
-// Die Navbar-Komponente stellt das Navigationsmenü der Anwendung dar.
 const Navbar = () => {
-    // Es verwendet NavLink-Komponenten aus der react-router-dom-Bibliothek,
-    // um Verknüpfungen zu verschiedenen Seiten der Anwendung zu erstellen.
-    // Der activeClassName-Prop wird verwendet, um den Link hervorzuheben,
-    // der zur aktuellen Route passt.
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+
+    const handleLogout = () => {
+        // Authentifizierungsstatus auf false setzen und Token aus dem lokalen Speicher entfernen
+        setIsAuthenticated(false);
+        localStorage.removeItem('token');
+    }
+
     return (
         <nav>
             <ul>
@@ -36,6 +40,17 @@ const Navbar = () => {
                         Standorte
                     </NavLink>
                 </li>
+                {!isAuthenticated ? (
+                    <li>
+                        <NavLink to="/login" exact activeClassName="active">
+                            Login
+                        </NavLink>
+                    </li>
+                ) : (
+                    <li>
+                        <button onClick={handleLogout}>Logout</button>
+                    </li>
+                )}
             </ul>
         </nav>
     );

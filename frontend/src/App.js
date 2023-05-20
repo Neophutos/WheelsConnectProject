@@ -7,14 +7,18 @@ import KundenTable from './components/view/KundenTable';
 import StandortTable from "./components/view/StandortTable";
 import BuchungTable from "./components/view/BuchungTable";
 import FahrzeugTable from "./components/view/FahrzeugTable";
+import LoginForm from './components/security/LoginForm';
 
-import './App.css'; // Importieren von allgemeinen CSS-Stilen für die App
+import './App.css';
+import AuthProvider from './components/security/AuthProvider.js';
+import PrivateRoute from "./components/security/PrivateRoute"; // Importieren von allgemeinen CSS-Stilen für die App
 
 // Hauptanwendungskomponente, die das Routing und die Struktur der Anwendung verwaltet.
 const App = () => {
     return (
         // Verwendung des BrowserRouter (alias "Router"), um die Navigation innerhalb der App zu ermöglichen.
         <Router>
+            <AuthProvider>
             {/* Die Navbar-Komponente enthält die Hauptnavigation der App. */}
             <Navbar />
 
@@ -24,13 +28,15 @@ const App = () => {
                 <Switch>
                     {/* Route-Komponenten definieren, welcher Pfad welche Komponente lädt. */}
                     {/* Das "exact" Attribut in der Root-Route gewährleistet, dass diese Komponente nur dann geladen wird, wenn der Pfad genau "/" ist. */}
-                    <Route path="/" exact component={Dashboard} />
-                    <Route path="/kunden" component={KundenTable} />
-                    <Route path="/buchungen" component={BuchungTable} />
-                    <Route path="/fahrzeuge" component={FahrzeugTable} />
-                    <Route path="/standorte" component={StandortTable} />
+                    <Route path="/login" component={LoginForm} />
+                    <PrivateRoute path="/" exact component={Dashboard} />
+                    <PrivateRoute path="/kunden" component={KundenTable} />
+                    <PrivateRoute path="/buchungen" component={BuchungTable} />
+                    <PrivateRoute path="/fahrzeuge" component={FahrzeugTable} />
+                    <PrivateRoute path="/standorte" component={StandortTable} />
                 </Switch>
             </div>
+        </AuthProvider>
         </Router>
     );
 };
