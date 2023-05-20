@@ -1,19 +1,26 @@
+// Importieren der notwendigen Pakete und Komponenten
 import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import {toast, ToastContainer} from "react-toastify";
 
+// FahrzeugForm-Komponente: Ein Formular zum Erstellen oder Bearbeiten eines Fahrzeugs
 const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
+
+    // State-Variable für Standorte
     const [standorte, setStandorte] = useState([]);
 
+    // Beim ersten Rendering Standorte abrufen
     useEffect(() => {
         fetchStandorte();
     }, []);
 
+    // Funktion zum Anzeigen eines Toasts mit einer Nachricht
     const showToast = (message) => {
         toast.error(message, { autoClose: 5000, position: toast.POSITION.BOTTOM_RIGHT });
     };
 
+    // Funktion zum Abrufen der Standorte von der API
     const fetchStandorte = async () => {
         try {
             const response = await axios.get('/standorte');
@@ -23,6 +30,7 @@ const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         }
     };
 
+    // Anfangsstatus des Fahrzeugs
     const [fahrzeug, setFahrzeug] = useState({
         marke: initialValues.marke || '',
         modell: initialValues.modell || '',
@@ -33,6 +41,7 @@ const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         standort: initialValues.standort || '',
     });
 
+    // Möglichkeiten für Fahrzeugtypen
     const fahrzeugtypen = [
         'Limousine',
         'Kombi',
@@ -44,10 +53,12 @@ const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         // Füge weitere Fahrzeugtypen hinzu
     ];
 
+    // Event-Handler, um den Fahrzeugstatus bei einer Änderung zu aktualisieren
     const handleChange = (e) => {
         setFahrzeug({ ...fahrzeug, [e.target.name]: e.target.value });
     };
 
+    // Event-Handler, um den ausgewählten Standort zu aktualisieren
     const handleStandortChange = (event) => {
         const selectedStandortId = event.target.value;
         const selectedStandort = standorte.find(
@@ -56,6 +67,7 @@ const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         setFahrzeug({ ...fahrzeug, standort: selectedStandort });
     };
 
+    // Event-Handler für das Absenden des Formulars
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -65,6 +77,7 @@ const FahrzeugForm = ({ onSubmit, initialValues = {}, handleClose }) => {
             showToast('Ein Fehler ist beim Speichern des Fahrzeugs aufgetreten');
         }
     };
+
 
     return (
         <>

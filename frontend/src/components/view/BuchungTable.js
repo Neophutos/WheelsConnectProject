@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
-import BuchungsForm from './BuchungsForm';
+import BuchungsForm from '../form/BuchungsForm';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'; // Importieren Sie die Icons
 
 const BuchungTable = () => {

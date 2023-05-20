@@ -1,9 +1,12 @@
+// Importieren der notwendigen Pakete und Komponenten
 import React, {useEffect, useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
 import {toast, ToastContainer} from "react-toastify";
 
+// KundenForm-Komponente: Ein Formular zum Erstellen oder Bearbeiten eines Kunden
 const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
 
+    // Funktion, um das heutige Datum als String zu erhalten
     const getTodayDateString = () => {
         const today = new Date();
         const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -13,6 +16,7 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         return `${year}-${month}-${day}`;
     };
 
+    // Funktion, die ausgeführt wird, wenn sich die initialValues ändern, um den Kundenstatus zu aktualisieren
     useEffect(() => {
         if (initialValues && Object.keys(initialValues).length > 0) {
             setKunde({
@@ -29,10 +33,12 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         }
     }, [initialValues]);
 
+    // Funktion zum Anzeigen eines Toasts mit einer Nachricht
     const showToast = (message) => {
         toast.error(message, { autoClose: 5000, position: toast.POSITION.BOTTOM_RIGHT });
     };
 
+    // Anfangsstatus des Kunden
     const [kunde, setKunde] = useState({
         vorname: '',
         nachname: '',
@@ -45,14 +51,16 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         email: '',
     });
 
+    // Event-Handler, um den Kundenstatus bei einer Änderung zu aktualisieren
     const handleChange = (e) => {
         setKunde({ ...kunde, [e.target.name]: e.target.value });
     };
 
+    // Event-Handler für das Absenden des Formulars
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Aktualisierte Kundendaten erstellen und das Enddatum korrekt überschreiben
+        // Erstellen von aktualisierten Kundendaten und korrektes Überschreiben des Geburtsdatums
         const updatedKunde = { ...kunde, geburtsdatum: kunde.geburtsdatum};
 
         try {
@@ -62,6 +70,7 @@ const KundenForm = ({ onSubmit, initialValues = {}, handleClose }) => {
             showToast('Ein Fehler ist beim Speichern des Kunden aufgetreten');
         }
     };
+
 
     return (
         <>

@@ -1,15 +1,16 @@
+// KundenTable.js
 import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
-import {Modal, Button} from 'react-bootstrap';
-import FahrzeugForm from "./FahrzeugForm";
+import { Modal, Button } from 'react-bootstrap';
+import KundenForm from "../form/KundenForm";
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
-const FahrzeugTable = () => {
+const KundenTable = () => {
     const [data, setData] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [selectedFahrzeug, setSelectedFahrzeug] = useState(null);
+    const [selectedKunde, setSelectedKunde] = useState(null);
     const [editingModal, setEditingModal] = useState(false);
 
     useEffect(() => {
@@ -17,32 +18,41 @@ const FahrzeugTable = () => {
     }, []);
 
     const fetchData = async () => {
-        const response = await axios.get('/fahrzeuge');
+        const response = await axios.get('/kunden');
         setData(response.data);
     };
 
-    const handleAdd = async (fahrzeug) => {
-        await axios.post('/fahrzeuge', fahrzeug);
+    const handleAdd = async (kunde) => {
+        await axios.post('/kunden', kunde);
         fetchData();
     };
 
-    const handleUpdate = async (id, fahrzeug) => {
-        await axios.put(`/fahrzeuge/${id}`, fahrzeug);
+    const handleUpdate = async (id, kunde) => {
+        await axios.put(`/kunden/${id}`, kunde);
         fetchData();
     };
 
     const handleDelete = async (id) => {
-        await axios.delete(`/fahrzeuge/${id}`);
+        await axios.delete(`/kunden/${id}`);
         fetchData();
     };
 
-    const handleShowEditForm = (fahrzeug) => {
-        setSelectedFahrzeug(fahrzeug);
+    const handleShowEditForm = (kunde) => {
+        setSelectedKunde(kunde);
         setEditingModal(true);
     };
-    const handleShowDeleteConfirm = (fahrzeug) => {
-        setSelectedFahrzeug(fahrzeug);
+    const handleShowDeleteConfirm = (kunde) => {
+        setSelectedKunde(kunde);
         setShowDeleteConfirm(true);
+    };
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        return `${day}.${month}.${year}`;
     };
 
     const columns = React.useMemo(
@@ -52,32 +62,41 @@ const FahrzeugTable = () => {
                 accessor: 'id',
             },
             {
-                Header: 'Marke',
-                accessor: 'marke',
+                Header: 'Vorname',
+                accessor: 'vorname',
             },
             {
-                Header: 'Modell',
-                accessor: 'modell',
+                Header: 'Nachname',
+                accessor: 'nachname',
             },
             {
-                Header: 'Typ',
-                accessor: 'typ',
+                Header: 'Geburtsdatum',
+                accessor: 'geburtsdatum',
+                Cell: ({ value }) => formatDate(value),
             },
             {
-                Header: 'Baujahr',
-                accessor: 'baujahr',
+                Header: 'Adresse',
+                accessor: 'adresse',
             },
             {
-                Header: 'Farbe',
-                accessor: 'farbe',
+                Header: 'Stadt',
+                accessor: 'stadt',
             },
             {
-                Header: 'Preis',
-                accessor: 'preis',
+                Header: 'PLZ',
+                accessor: 'plz',
             },
             {
-                Header: 'Standort',
-                accessor: 'standort.name',
+                Header: 'Land',
+                accessor: 'land',
+            },
+            {
+                Header: 'Telefonnummer',
+                accessor: 'telefonnummer',
+            },
+            {
+                Header: 'Email',
+                accessor: 'email',
             },
         ],
         []
@@ -93,27 +112,27 @@ const FahrzeugTable = () => {
 
     return (
         <div>
-            <h2>Fahrzeuge</h2>
-            <Button variant={"dark"} className={"btn-darkmode"} onClick={() => setShowForm(true)}>Fahrzeug hinzufügen</Button>
+            <h2>Kunden</h2>
+            <Button variant={"dark"} className={"btn-darkmode"} onClick={() => setShowForm(true)}>Kunde hinzufügen</Button>
             <Modal show={showForm} onHide={() => setShowForm(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Fahrzeug hinzufügen</Modal.Title>
+                    <Modal.Title>Kunde hinzufügen</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FahrzeugForm onSubmit={handleAdd} handleClose={() => setShowForm(false)} />
+                    <KundenForm onSubmit={handleAdd} handleClose={() => setShowForm(false)} />
                 </Modal.Body>
             </Modal>
             <Modal show={editingModal} onHide={() => setEditingModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Buchung bearbeiten</Modal.Title>
+                    <Modal.Title>Kunde bearbeiten</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FahrzeugForm
-                        onSubmit={(updatedBuchung) => {
-                            handleUpdate(selectedFahrzeug.id, updatedBuchung);
+                    <KundenForm
+                        onSubmit={(updatedKunde) => {
+                            handleUpdate(selectedKunde.id, updatedKunde);
                             setEditingModal(false);
                         }}
-                        initialValues={selectedFahrzeug}
+                        initialValues={selectedKunde}
                         handleClose={() => setEditingModal(false)}
                     />
                 </Modal.Body>
@@ -128,7 +147,7 @@ const FahrzeugTable = () => {
                         <Button
                             variant="danger"
                             onClick={() => {
-                                handleDelete(selectedFahrzeug.id);
+                                handleDelete(selectedKunde.id);
                                 setShowDeleteConfirm(false);
                             }}
                         >
@@ -156,28 +175,28 @@ const FahrzeugTable = () => {
                 {rows.map((row) => {
                     prepareRow(row);
                     return (
-                            <tr {...row.getRowProps()}>
-                                {row.cells.map((cell) => {
-                                    return (
-                                        <td {...cell.getCellProps()} className="table-dark-cell">
-                                            {cell.render('Cell')}
-                                        </td>
-                                    );
-                                })}
-                                <td>
-                                    <button
-                                        onClick={() => handleShowEditForm(row.original)}
-                                        style={{ background: 'none',border: 'none', color: 'blue', cursor: 'pointer' }}>
-                                        <AiOutlineEdit />
-                                    </button>
-                                    <button
-                                        onClick={() => handleShowDeleteConfirm(row.original)}
-                                        style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
-                                    >
-                                        <AiOutlineDelete />
-                                    </button>
-                                </td>
-                            </tr>
+                        <tr {...row.getRowProps()}>
+                            {row.cells.map((cell) => {
+                                return (
+                                    <td {...cell.getCellProps()} className="table-dark-cell">
+                                        {cell.render('Cell')}
+                                    </td>
+                                );
+                            })}
+                            <td>
+                                <button
+                                    onClick={() => handleShowEditForm(row.original)}
+                                    style={{ background: 'none',border: 'none', color: 'blue', cursor: 'pointer' }}>
+                                    <AiOutlineEdit />
+                                </button>
+                                <button
+                                    onClick={() => handleShowDeleteConfirm(row.original)}
+                                    style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
+                                >
+                                    <AiOutlineDelete />
+                                </button>
+                            </td>
+                        </tr>
                     );
                 })}
                 </tbody>
@@ -186,4 +205,4 @@ const FahrzeugTable = () => {
     );
 };
 
-export default FahrzeugTable;
+export default KundenTable;

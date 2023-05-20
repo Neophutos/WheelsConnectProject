@@ -1,12 +1,12 @@
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Dashboard from './components/Dashboard';
-import KundenTable from './components/kunde/KundenTable';
-import StandortTable from "./components/standort/StandortTable";
-import BuchungTable from "./components/buchung/BuchungTable";
-import FahrzeugTable from "./components/fahrzeug/FahrzeugTable";
+import Navbar from './components/view/Navbar';
+import Dashboard from './components/view/Dashboard';
+import KundenTable from './components/view/KundenTable';
+import StandortTable from "./components/view/StandortTable";
+import BuchungTable from "./components/view/BuchungTable";
+import FahrzeugTable from "./components/view/FahrzeugTable";
 
 import './App.css';
 

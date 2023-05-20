@@ -1,8 +1,11 @@
+// Importieren der notwendigen Pakete und Komponenten
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import {toast, ToastContainer} from "react-toastify";
 
+// StandortForm-Komponente: Ein Formular zum Erstellen oder Bearbeiten eines Standorts
 const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
+    // Anfangsstatus des Standorts
     const [standort, setStandort] = useState({
         name: initialValues.name || '',
         kapazitaet: initialValues.kapazitaet || '',
@@ -14,11 +17,12 @@ const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         oeffnungszeiten: initialValues.oeffnungszeiten || '',
     });
 
+    // Funktion zum Anzeigen eines Toasts mit einer Nachricht
     const showToast = (message) => {
         toast.error(message, { autoClose: 5000, position: toast.POSITION.BOTTOM_RIGHT });
     };
 
-
+    // Funktion, die ausgeführt wird, wenn sich die initialValues ändern, um den Standortstatus zu aktualisieren
     useEffect(() => {
         if (initialValues && Object.keys(initialValues).length > 0) {
             setStandort({
@@ -34,11 +38,13 @@ const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
         }
     }, [initialValues]);
 
+    // Event-Handler, um den Standortstatus bei einer Änderung zu aktualisieren
     const handleChange = (event) => {
         const { name, value } = event.target;
         setStandort({ ...standort, [name]: value });
     };
 
+    // Event-Handler für das Absenden des Formulars
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -48,6 +54,7 @@ const StandortForm = ({ onSubmit, initialValues = {}, handleClose }) => {
             showToast('Ein Fehler ist beim Speichern des Standorts aufgetreten.');
         }
     };
+
 
     return (
         <>

@@ -1,19 +1,24 @@
+// Importieren der notwendigen Pakete und Komponenten
 import React, { useEffect, useState } from 'react';
 import { Form, Button} from 'react-bootstrap';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
+// BuchungsForm-Komponente: Ein Formular zum Erstellen oder Bearbeiten einer Buchung.
 const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = false }) => {
+
+    // State-Variablen für Kunden und Fahrzeuge
     const [kunden, setKunden] = useState([]);
     const [fahrzeuge, setFahrzeuge] = useState([]);
 
+    // Beim ersten Rendering Kunden und Fahrzeuge abrufen
     useEffect(() => {
         fetchKunden();
         fetchFahrzeuge();
     }, []);
 
+    // Wenn initialValues (bereits vorhandene Werte) übergeben werden, aktualisiere die Buchungsdaten entsprechend
     useEffect(() => {
         if (initialValues && Object.keys(initialValues).length > 0) {
             setBuchung({
@@ -26,10 +31,12 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         }
     }, [initialValues]);
 
+    // Funktion zum Anzeigen eines Toasts mit einer Fehlernachricht
     const showToast = (message) => {
         toast.error(message, { autoClose: 5000, position: toast.POSITION.BOTTOM_RIGHT });
     };
 
+    // Funktion zum Abrufen der Kunden von der API
     const fetchKunden = async () => {
         try {
             const response = await axios.get('/kunden');
@@ -39,6 +46,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         }
     };
 
+    // Funktion zum Abrufen der Fahrzeuge von der API
     const fetchFahrzeuge = async () => {
         try {
             const response = await axios.get('/fahrzeuge');
@@ -48,6 +56,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         }
     };
 
+    // Anfangsstatus der Buchung
     const [buchung, setBuchung] = useState({
         startdatum: '',
         enddatum: '',
@@ -56,6 +65,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         fahrzeug: null,
     });
 
+    // Möglichkeiten für den Buchungsstatus
     const buchungsstatusOptions = [
         'Reserviert',
         'Abgeholt',
@@ -63,10 +73,12 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         'Zurückgegeben',
     ];
 
+    // Event-Handler, um den Buchungsstatus bei einer Änderung zu aktualisieren
     const handleChange = (e) => {
         setBuchung({ ...buchung, [e.target.name]: e.target.value });
     };
 
+    // Event-Handler, um den ausgewählten Kunden zu aktualisieren
     const handleKundeChange = (event) => {
         const selectedKundeId = event.target.value;
         const selectedKunde = kunden.find(
@@ -75,6 +87,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         setBuchung({ ...buchung, kunde: selectedKunde });
     };
 
+    // Event-Handler, um das ausgewählte Fahrzeug zu aktualisieren
     const handleFahrzeugChange = (event) => {
         const selectedFahrzeugId = event.target.value;
         const selectedFahrzeug = fahrzeuge.find(
@@ -83,6 +96,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         setBuchung({ ...buchung, fahrzeug: selectedFahrzeug });
     };
 
+    // Funktion, um das heutige Datum als Zeichenkette zurückzugeben
     const getTodayDateString = () => {
         const today = new Date();
         const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -92,6 +106,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         return `${year}-${month}-${day}`;
     };
 
+    // Funktion, um den Gesamtpreis zu berechnen
     const calculateGesamtpreis = () => {
         if (!buchung.startdatum || !buchung.enddatum || !buchung.fahrzeug) {
             return 0;
@@ -108,9 +123,11 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         return days * buchung.fahrzeug.preis;
     };
 
+    // Event-Handler für das Absenden des Formulars
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Überprüfen, ob Kunde und Fahrzeug ausgewählt wurden
         if (!buchung.fahrzeug || !buchung.kunde) {
             showToast('Bitte wählen Sie einen Kunden und ein Fahrzeug aus.');
             return;
@@ -122,6 +139,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
             return;
         }
 
+        // Wenn wir eine neue Buchung erstellen, prüfen wir, ob das Fahrzeug verfügbar ist
         if (!isEditing) {
             // Verfügbarkeit des Fahrzeugs prüfen
             const availabilityResponse = await axios.post("/buchungen/check-availability", {
@@ -142,6 +160,7 @@ const BuchungsForm = ({ onSubmit, initialValues = {}, handleClose, isEditing = f
         // Aktualisierte Buchungsdaten erstellen und das Enddatum korrekt überschreiben
         const updatedBuchung = { ...buchung, gesamtpreis, enddatum: buchung.enddatum };
 
+        // Versuch, die Buchung zu speichern
         try {
             await onSubmit(updatedBuchung);
             handleClose && handleClose();

@@ -1,16 +1,15 @@
-// KundenTable.js
 import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
-import KundenForm from "./KundenForm";
+import StandortForm from "../form/StandortForm";
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
-const KundenTable = () => {
+const StandortTable = () => {
     const [data, setData] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [selectedKunde, setSelectedKunde] = useState(null);
+    const [selectedStandort, setselectedStandort] = useState(null);
     const [editingModal, setEditingModal] = useState(false);
 
     useEffect(() => {
@@ -18,41 +17,32 @@ const KundenTable = () => {
     }, []);
 
     const fetchData = async () => {
-        const response = await axios.get('/kunden');
+        const response = await axios.get('/standorte');
         setData(response.data);
     };
 
-    const handleAdd = async (kunde) => {
-        await axios.post('/kunden', kunde);
+    const handleAdd = async (standort) => {
+        await axios.post('/standorte', standort);
         fetchData();
     };
 
-    const handleUpdate = async (id, kunde) => {
-        await axios.put(`/kunden/${id}`, kunde);
+    const handleUpdate = async (id, standort) => {
+        await axios.put(`/standorte/${id}`, standort);
         fetchData();
     };
 
     const handleDelete = async (id) => {
-        await axios.delete(`/kunden/${id}`);
+        await axios.delete(`/standorte/${id}`);
         fetchData();
     };
 
-    const handleShowEditForm = (kunde) => {
-        setSelectedKunde(kunde);
+    const handleShowEditForm = (standort) => {
+        setselectedStandort(standort);
         setEditingModal(true);
     };
-    const handleShowDeleteConfirm = (kunde) => {
-        setSelectedKunde(kunde);
+    const handleShowDeleteConfirm = (standort) => {
+        setselectedStandort(standort);
         setShowDeleteConfirm(true);
-    };
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-
-        return `${day}.${month}.${year}`;
     };
 
     const columns = React.useMemo(
@@ -62,17 +52,12 @@ const KundenTable = () => {
                 accessor: 'id',
             },
             {
-                Header: 'Vorname',
-                accessor: 'vorname',
+                Header: 'Name',
+                accessor: 'name',
             },
             {
-                Header: 'Nachname',
-                accessor: 'nachname',
-            },
-            {
-                Header: 'Geburtsdatum',
-                accessor: 'geburtsdatum',
-                Cell: ({ value }) => formatDate(value),
+                Header: 'Kapazität',
+                accessor: 'kapazitaet',
             },
             {
                 Header: 'Adresse',
@@ -95,8 +80,8 @@ const KundenTable = () => {
                 accessor: 'telefonnummer',
             },
             {
-                Header: 'Email',
-                accessor: 'email',
+                Header: 'Öffnungszeiten',
+                accessor: 'oeffnungszeiten',
             },
         ],
         []
@@ -112,27 +97,27 @@ const KundenTable = () => {
 
     return (
         <div>
-            <h2>Kunden</h2>
-            <Button variant={"dark"} className={"btn-darkmode"} onClick={() => setShowForm(true)}>Kunde hinzufügen</Button>
+            <h2>Standorte</h2>
+            <Button variant={"dark"} className={"btn-darkmode"} onClick={() => setShowForm(true)}>Standort hinzufügen</Button>
             <Modal show={showForm} onHide={() => setShowForm(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Kunde hinzufügen</Modal.Title>
+                    <Modal.Title>Standort hinzufügen</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <KundenForm onSubmit={handleAdd} handleClose={() => setShowForm(false)} />
+                    <StandortForm onSubmit={handleAdd} handleClose={() => setShowForm(false)} />
                 </Modal.Body>
             </Modal>
             <Modal show={editingModal} onHide={() => setEditingModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Kunde bearbeiten</Modal.Title>
+                    <Modal.Title>Standort bearbeiten</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <KundenForm
-                        onSubmit={(updatedKunde) => {
-                            handleUpdate(selectedKunde.id, updatedKunde);
+                    <StandortForm
+                        onSubmit={(updatedStandort) => {
+                            handleUpdate(selectedStandort.id, updatedStandort);
                             setEditingModal(false);
                         }}
-                        initialValues={selectedKunde}
+                        initialValues={selectedStandort}
                         handleClose={() => setEditingModal(false)}
                     />
                 </Modal.Body>
@@ -147,7 +132,7 @@ const KundenTable = () => {
                         <Button
                             variant="danger"
                             onClick={() => {
-                                handleDelete(selectedKunde.id);
+                                handleDelete(selectedStandort.id);
                                 setShowDeleteConfirm(false);
                             }}
                         >
@@ -205,4 +190,4 @@ const KundenTable = () => {
     );
 };
 
-export default KundenTable;
+export default StandortTable;
