@@ -18,9 +18,9 @@ public class LoginController {
         User foundUser = userRepository.findByUsername(user.getUsername());
 
         if (foundUser != null && foundUser.getPassword().equals(user.getPassword())) {
-            return ResponseEntity.ok("Logged in successfully");
+            return ResponseEntity.ok("Login erfolgreich");
         } else {
-            return ResponseEntity.status(401).body("Invalid username or password");
+            return ResponseEntity.status(401).body("Ungültiger Nutzername oder Passwort");
         }
     }
 }
