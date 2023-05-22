@@ -3,14 +3,18 @@ import axios from "axios";
 import { AuthContext } from './AuthProvider';
 import {useHistory} from "react-router-dom";
 
+// Diese Komponente stellt das Login-Formular dar.
+// Sie verwendet den AuthContext, um den Authentifizierungsstatus des Benutzers zu setzen.
 const LoginForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(""); // Add this line
+    const [error, setError] = useState("");
 
-    const { setIsAuthenticated } = useContext(AuthContext);
-    const history = useHistory(); // Add this line
+    const { setIsAuthenticated } = useContext(AuthContext); // Zugriff auf die Setter-Funktion des Authentifizierungsstatus
+    const history = useHistory(); // Zugriff auf die History-API für die Umleitung
 
+    // Diese Funktion wird ausgeführt, wenn das Formular abgeschickt wird.
+    // Sie sendet die Anmeldedaten an den Server und setzt den Authentifizierungsstatus entsprechend dem Serverantwort.
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -38,7 +42,7 @@ const LoginForm = () => {
     return (
         <form onSubmit={handleSubmit}>
             <label>
-                Username:
+                Nutzername:
                 <input
                     type="text"
                     value={username}
@@ -47,7 +51,7 @@ const LoginForm = () => {
                 />
             </label>
             <label>
-                Password:
+                Passwort:
                 <input
                     type="password"
                     value={password}
