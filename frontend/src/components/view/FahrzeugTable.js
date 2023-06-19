@@ -1,6 +1,6 @@
 // Importieren der notwendigen Pakete und Komponenten
 import React, { useState, useEffect } from 'react';
-import { useTable } from 'react-table';
+import { useTable, useFilters, useSortBy } from 'react-table';
 import axios from 'axios';
 import {Modal, Button} from 'react-bootstrap';
 import FahrzeugForm from "../form/FahrzeugForm";
@@ -43,6 +43,21 @@ const FahrzeugTable = () => {
         fetchData();
     };
 
+    // Eine generische Textfilterfunktion
+    function TextFilter({
+                            column: { filterValue, setFilter },
+                        }) {
+        return (
+            <input
+                value={filterValue || ""}
+                onChange={e => {
+                    setFilter(e.target.value || undefined);
+                }}
+                placeholder={`Suche...`}
+            />
+        );
+    }
+
     // Methoden zum Anzeigen des Bearbeitungsformulars und der Löschbestätigung.
     const handleShowEditForm = (fahrzeug) => {
         setSelectedFahrzeug(fahrzeug);
@@ -59,34 +74,42 @@ const FahrzeugTable = () => {
             {
                 Header: 'ID',
                 accessor: 'id',
+                disableFilters: true, // Added
             },
             {
                 Header: 'Marke',
                 accessor: 'marke',
+                Filter: TextFilter,
             },
             {
                 Header: 'Modell',
                 accessor: 'modell',
+                Filter: TextFilter,
             },
             {
                 Header: 'Typ',
                 accessor: 'typ',
+                Filter: TextFilter,
             },
             {
                 Header: 'Baujahr',
                 accessor: 'baujahr',
+                disableFilters: true, // Added
             },
             {
                 Header: 'Farbe',
                 accessor: 'farbe',
+                Filter: TextFilter,
             },
             {
                 Header: 'Preis',
                 accessor: 'preis',
+                disableFilters: true, // Added
             },
             {
                 Header: 'Standort',
                 accessor: 'standort.name',
+                disableFilters: true, // Added
             },
         ],
         []
@@ -99,7 +122,7 @@ const FahrzeugTable = () => {
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data });
+    } = useTable({ columns, data }, useFilters, useSortBy);
 
     return (
         <div>
@@ -152,11 +175,21 @@ const FahrzeugTable = () => {
             </Modal>
             <table className={"table-dark"} {...getTableProps()}>
                 <thead>
-                {headerGroups.map((headerGroup) => (
+                {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map((column) => (
-                            <th {...column.getHeaderProps()} className="table-dark-header">
+                        {headerGroup.headers.map(column => (
+                            <th {...column.getHeaderProps(column.getSortByToggleProps())} className="table-dark-header">
                                 {column.render('Header')}
+                                {/* Fügen Sie eine Sortierrichtungsanzeige hinzu */}
+                                <span>
+                                    {column.isSorted
+                                        ? column.isSortedDesc
+                                            ? ' ↓'
+                                            : ' ↑'
+                                        : ''}
+                                </span>
+                                {/* Fügen Sie die Filterkomponente hinzu */}
+                                <div>{column.canFilter ? column.render('Filter') : null}</div>
                             </th>
                         ))}
                     </tr>
@@ -166,28 +199,28 @@ const FahrzeugTable = () => {
                 {rows.map((row) => {
                     prepareRow(row);
                     return (
-                            <tr {...row.getRowProps()}>
-                                {row.cells.map((cell) => {
-                                    return (
-                                        <td {...cell.getCellProps()} className="table-dark-cell">
-                                            {cell.render('Cell')}
-                                        </td>
-                                    );
-                                })}
-                                <td>
-                                    <button
-                                        onClick={() => handleShowEditForm(row.original)}
-                                        style={{ background: 'none',border: 'none', color: 'blue', cursor: 'pointer' }}>
-                                        <AiOutlineEdit />
-                                    </button>
-                                    <button
-                                        onClick={() => handleShowDeleteConfirm(row.original)}
-                                        style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
-                                    >
-                                        <AiOutlineDelete />
-                                    </button>
-                                </td>
-                            </tr>
+                        <tr {...row.getRowProps()}>
+                            {row.cells.map((cell) => {
+                                return (
+                                    <td {...cell.getCellProps()} className="table-dark-cell">
+                                        {cell.render('Cell')}
+                                    </td>
+                                );
+                            })}
+                            <td>
+                                <button
+                                    onClick={() => handleShowEditForm(row.original)}
+                                    style={{ background: 'none',border: 'none', color: 'blue', cursor: 'pointer' }}>
+                                    <AiOutlineEdit />
+                                </button>
+                                <button
+                                    onClick={() => handleShowDeleteConfirm(row.original)}
+                                    style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
+                                >
+                                    <AiOutlineDelete />
+                                </button>
+                            </td>
+                        </tr>
                     );
                 })}
                 </tbody>
