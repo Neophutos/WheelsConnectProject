@@ -1,6 +1,0 @@
-<application>
-    <resource-bundle>
-        <base-name>messages</base-name>
-        <var>msg</var>
-    </resource-bundle>
-</application>
